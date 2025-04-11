@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dental_app_graduation_project/Screens/Doctor_details_Screen.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/Screens/Doctor_details_Screen.dart';
 
-import 'home_tab.dart';
 
 class HaertTab extends StatelessWidget {
   static const String route_name = "Haert Tab";
@@ -44,7 +42,7 @@ class HaertTab extends StatelessWidget {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Text("Favourite"),
+              title: const Text("Favourite"),
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
@@ -56,7 +54,7 @@ class HaertTab extends StatelessWidget {
                   TextField(
                     decoration: InputDecoration(
                       hintText: "Search",
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -229,7 +227,7 @@ Widget FeatureDoctorCard(String name, String rating, String image) {
     ),
     child: Column(
       children: [
-        Align(
+        const Align(
           alignment: Alignment.topRight,
           child: Icon(Icons.star, color: Colors.orange, size: 18),
         ),

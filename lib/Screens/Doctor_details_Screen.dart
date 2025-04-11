@@ -1,8 +1,10 @@
+import 'package:dental_app_graduation_project/Screens/Doctor_selete_time_Screen.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/Screens/Doctor_selete_time_Screen.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
   static const String route_name ="Doctor Details Screen";
+
+  const DoctorDetailsScreen({super.key});
   @override
   _DoctorDetailsScreenState createState() => _DoctorDetailsScreenState();
 }
@@ -22,7 +24,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
               colors: [
                 Colors.blue.shade50,
                 Colors.white,
-                Color.fromRGBO(14, 189, 126, 1),
+                const Color.fromRGBO(14, 189, 126, 1),
               ],
             ),
           ),
@@ -32,15 +34,15 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: Text("Doctor Details"),
+            title: const Text("Doctor Details"),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context),
             ),
-            actions: [Icon(Icons.search)],
+            actions: const [Icon(Icons.search)],
           ),
           body: SingleChildScrollView(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,7 +52,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                   ),
                   elevation: 4,
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
                         Row(
@@ -64,8 +66,8 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 16),
-                            Expanded(
+                            const SizedBox(width: 16),
+                            const Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -109,7 +111,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                     });
                                   },
                                 ),
-                                Row(
+                                const Row(
                                   children: [
                                     Text(
                                       "\$ ",
@@ -130,7 +132,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                         Center(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromRGBO(14, 189, 126, 1),
+                              backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -138,7 +140,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                             onPressed: () {
                               Navigator.pushNamed(context, SelectTimeScreen.route_name);
                             },
-                            child: Text("Book Now",
+                            child: const Text("Book Now",
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ),
@@ -146,7 +148,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -155,22 +157,22 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                     _infoCard("700", "Patient"),
                   ],
                 ),
-                SizedBox(height: 30),
-                Text(
+                const SizedBox(height: 30),
+                const Text(
                   "Services",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 _serviceItem(
                     "1. Patient care should be the number one priority."),
-                Divider(),
+                const Divider(),
                 _serviceItem(
                     "2. If you run your practice you know how frustrating."),
-                Divider(),
+                const Divider(),
                 _serviceItem(
                     "3. That's why some of appointment reminder system."),
-                Divider(),
-                SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 16),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.asset("assets/map.png", fit: BoxFit.cover),
@@ -187,8 +189,8 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
     return Column(
       children: [
         Text(number,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        Text(label, style: TextStyle(color: Colors.grey)),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(label, style: const TextStyle(color: Colors.grey)),
       ],
     );
   }
@@ -199,9 +201,9 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.check_circle,
+          const Icon(Icons.check_circle,
               color: Color.fromRGBO(14, 189, 126, 1), size: 20),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Expanded(child: Text(text)),
         ],
       ),

@@ -1,10 +1,11 @@
+import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Patient.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/Screens/Sign_up_Screen.dart';
+
 
 class OnboardingScreen3 extends StatelessWidget {
   static const String route_name = "Onboarding Screen 3";
-  OnboardingScreen3({super.key});
+  const OnboardingScreen3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class OnboardingScreen3 extends StatelessWidget {
                     Navigator.pushNamed(context, SignUpScreen.route_name);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(14, 189, 126, 1),
+                    backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

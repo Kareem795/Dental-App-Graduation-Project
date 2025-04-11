@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class SelectTimeScreen extends StatefulWidget {
   static const String route_name = "Select Time Screen";
+
+  const SelectTimeScreen({super.key});
   @override
   _SelectTimeScreenState createState() => _SelectTimeScreenState();
 }
@@ -22,7 +24,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
       child: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.transparent,
               image: DecorationImage(
                 image: AssetImage("assets/Ellipse 143.png"),
@@ -31,7 +33,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.transparent,
               image: DecorationImage(
                 image: AssetImage("assets/Ellipse 142.png"),
@@ -43,14 +45,14 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              title: Text("Select Time"),
+              title: const Text("Select Time"),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
               ),
             ),
             body: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -60,7 +62,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                     ),
                     elevation: 4,
                     child: Padding(
-                      padding: EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Row(
                         children: [
                           ClipRRect(
@@ -72,8 +74,8 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(width: 16),
-                          Expanded(
+                          const SizedBox(width: 16),
+                          const Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -105,7 +107,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -121,7 +123,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                             ),
                           ),
                           selected: selectedDateIndex == index,
-                          selectedColor: Color.fromRGBO(14, 189, 126, 1),
+                          selectedColor: const Color.fromRGBO(14, 189, 126, 1),
                           onSelected: (selected) {
                             setState(() {
                               selectedDateIndex = index;
@@ -131,39 +133,39 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                       }),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     dates[selectedDateIndex]["date"],
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     dates[selectedDateIndex]["slots"] > 0
                         ? "${dates[selectedDateIndex]["slots"]} slots available"
                         : "No slots available",
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(14, 189, 126, 1),
+                        backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       onPressed: () {},
-                      child: Text(
+                      child: const Text(
                         "Next availability on Wed, 24 Feb",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Center(
+                  const SizedBox(height: 8),
+                  const Center(
                     child: Text("OR"),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Center(
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
@@ -171,10 +173,10 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         side:
-                            BorderSide(color: Color.fromRGBO(14, 189, 126, 1)),
+                            const BorderSide(color: Color.fromRGBO(14, 189, 126, 1)),
                       ),
                       onPressed: () {},
-                      child: Text("Contact Clinic",
+                      child: const Text("Contact Clinic",
                           style: TextStyle(
                               color: Color.fromRGBO(14, 189, 126, 1))),
                     ),

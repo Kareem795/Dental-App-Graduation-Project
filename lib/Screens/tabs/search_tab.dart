@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dental_app_graduation_project/Screens/Doctor_details_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/Doctor_selete_time_Screen.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/Screens/Doctor_details_Screen.dart';
-import 'package:graduation_project/Screens/Doctor_selete_time_Screen.dart';
 
 class SearchTab extends StatefulWidget {
   static const String route_name = "Search Tab";
@@ -36,23 +35,23 @@ class _SearchTabState extends State<SearchTab> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Text("My Doctors"),
+              title: const Text("My Doctors"),
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   TextField(
                     decoration: InputDecoration(
                       hintText: "Search",
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Expanded(
                     child: ListView.builder(
                       itemCount: doctors.length,
@@ -68,7 +67,7 @@ class _SearchTabState extends State<SearchTab> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                             elevation: 4,
-                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Column(
@@ -85,7 +84,7 @@ class _SearchTabState extends State<SearchTab> {
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                        SizedBox(width: 12),
+                                        const SizedBox(width: 12),
                                         Expanded(
                                           child: Column(
                                             crossAxisAlignment:
@@ -93,7 +92,7 @@ class _SearchTabState extends State<SearchTab> {
                                             children: [
                                               Text(
                                                 doctor["name"],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -101,17 +100,17 @@ class _SearchTabState extends State<SearchTab> {
 
                                               Text(
                                                 doctor["specialty"],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Color.fromRGBO(
                                                       14, 189, 126, 1),
                                                 ),
                                               ),
 
-                                              SizedBox(height: 10),
+                                              const SizedBox(height: 10),
 
                                               Text(
                                                 doctor["experience"],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.black),
                                               ),
 
@@ -119,40 +118,40 @@ class _SearchTabState extends State<SearchTab> {
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      CircleAvatar(
+                                                      const CircleAvatar(
                                                         backgroundColor:
                                                             Color.fromRGBO(14,
                                                                 189, 126, 1),
                                                         minRadius: 6,
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         width: 3,
                                                       ),
                                                       Text(
                                                         "${doctor["rating"]}",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.grey),
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Row(
                                                     children: [
-                                                      CircleAvatar(
+                                                      const CircleAvatar(
                                                         backgroundColor:
                                                             Color.fromRGBO(14,
                                                                 189, 126, 1),
                                                         minRadius: 6,
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         width: 3,
                                                       ),
                                                       Text(
                                                         "${doctor["reviews"]}",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.grey),
                                                       ),
@@ -165,7 +164,7 @@ class _SearchTabState extends State<SearchTab> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(width: 15),
+                                        const SizedBox(width: 15),
                                         IconButton(
                                           icon: Icon(
                                             doctor["favorite"]
@@ -191,7 +190,7 @@ class _SearchTabState extends State<SearchTab> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 "Next Available",
                                                 style: TextStyle(
                                                     color: Color.fromRGBO(
@@ -201,7 +200,7 @@ class _SearchTabState extends State<SearchTab> {
                                               ),
                                               Text(
                                                 "${doctor["nextAvailable"]}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.black),
                                               )
                                             ],
@@ -210,7 +209,7 @@ class _SearchTabState extends State<SearchTab> {
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor:
-                                                Color.fromRGBO(14, 189, 126, 1),
+                                                const Color.fromRGBO(14, 189, 126, 1),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -220,7 +219,7 @@ class _SearchTabState extends State<SearchTab> {
                                             Navigator.pushNamed(context,
                                                 SelectTimeScreen.route_name);
                                           },
-                                          child: Text(
+                                          child: const Text(
                                             "Book Now",
                                             style:
                                                 TextStyle(color: Colors.white),

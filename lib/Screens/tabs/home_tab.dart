@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +14,7 @@ class HomeTab extends StatelessWidget {
           Stack(
             children: [buildHeader(context), buildSearchBar()],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           buildCommunitySection(),
@@ -77,7 +76,7 @@ class HomeTab extends StatelessWidget {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),
                       blurRadius: 6,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     )
                   ],
                   image: const DecorationImage(

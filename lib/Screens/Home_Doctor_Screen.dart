@@ -1,36 +1,31 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dental_app_graduation_project/Screens/Medical_Report_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/Patiant_Profile_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/Setting_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/favourite_tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/home_tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/massege_tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/search_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/Screens/Patiant_Profile_Screen.dart';
-import 'package:graduation_project/Screens/Setting_Screen.dart';
-import 'package:graduation_project/Screens/tabs/search_tab.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'tabs/favourite_tab.dart';
-import 'tabs/home_tab.dart';
-import 'tabs/massege_tab.dart';
-
-class Home extends StatefulWidget {
-  static const String route_name = "home";
-  const Home({super.key});
+class HomeDoctorScreen extends StatefulWidget {
+  static const String route_name = "Home Doctor Screen";
+  const HomeDoctorScreen({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeDoctorScreen> createState() => _HomeDoctorScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeDoctorScreenState extends State<HomeDoctorScreen> {
   int sellectedTabIndex = 0;
   List<Widget> tabs = const [HomeTab(), HaertTab(), SearchTab(), MassegeTab()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.tealAccent,
-      //   title: Text("Doctor",style: TextStyle(fontSize: 20,color: Colors.black),),
-      // ),
-
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Color.fromRGBO(14, 189, 126, 1),
                 borderRadius: BorderRadius.only(
@@ -59,32 +54,51 @@ class _HomeState extends State<Home> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home"),
+              leading: const Icon(Icons.home),
+              title: const Text("Home"),
               onTap: () {
                 // اضف هنا التنقل أو الإجراء المطلوب
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
+              leading: const Icon(Icons.settings),
+              title: const Text("Settings"),
               onTap: () {
                 Navigator.pushNamed(context, SettingsScreen.route_name);
               },
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Profile"),
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
               onTap: () {
                 Navigator.pushNamed(context, ProfileSetupScreen.route_name);
               },
             ),
-            Divider(),
             ListTile(
-              leading: Icon(Icons.logout, color: Colors.red),
-              title: Text("Logout", style: TextStyle(color: Colors.red)),
+              leading: const Icon(FontAwesomeIcons.fileMedical),
+              title: const Text("Medical Report"),
+              onTap: () {
+                Navigator.pushNamed(context, MedicalReportScreen.route_name);
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(FontAwesomeIcons.xRay),
+              title: const Text("Upload X-ray"),
+              onTap: () {
+                // Navigator.pushNamed(context, ProfileSetupScreen.route_name);
+              },
+            ),
+
+
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text("Logout", style: TextStyle(color: Colors.red)),
               onTap: () {},
             ),
+            
+            
           ],
         ),
       ),
@@ -98,7 +112,7 @@ class _HomeState extends State<Home> {
         },
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
-        backgroundColor: Color.fromRGBO(14, 189, 126, 1),
+        backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
         //selectedFontSize: 25,
         iconSize: 25,
         showSelectedLabels: true,

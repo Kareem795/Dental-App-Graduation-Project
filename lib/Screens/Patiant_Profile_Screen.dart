@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class ProfileSetupScreen extends StatefulWidget {
   static const String route_name = "Profile Setup Screen";
 
+  const ProfileSetupScreen({super.key});
+
   @override
   _ProfileSetupScreenState createState() => _ProfileSetupScreenState();
 }
@@ -19,10 +21,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(14, 189, 126, 1),
+        backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -33,16 +35,16 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           //! All in this Column
           children: [
             Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color.fromRGBO(14, 189, 126, 1),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),
                 ),
               ),
-              child: Column(
+              child: const Column(
                 children: [
                   CircleAvatar(
                     radius: 70, //! Control size Image
@@ -91,16 +93,16 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       (value) => setState(() => dob = value), context),
                   buildTextField('Location', location,
                       (value) => setState(() => location = value), context),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromRGBO(14, 189, 126, 1),
-                      minimumSize: Size(double.infinity, 50),
+                      backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                      minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: Text('Continue',
+                    child: const Text('Continue',
                         style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                 ],
@@ -125,7 +127,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           decoration: InputDecoration(
             labelText: label,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            suffixIcon: Icon(
+            suffixIcon: const Icon(
               Icons.edit,
               color: Color.fromRGBO(14, 189, 126, 1),
             ),
@@ -158,7 +160,7 @@ class EditFieldScreen extends StatefulWidget {
   final String initialValue;
   final Function(String) onSaved;
 
-  const EditFieldScreen({
+  const EditFieldScreen({super.key, 
     required this.fieldName,
     required this.initialValue,
     required this.onSaved,
@@ -193,12 +195,12 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF4A6572),
+      backgroundColor: const Color(0xFF4A6572),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -209,19 +211,19 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
           children: [
             Text(
               "What is your ${widget.fieldName.toLowerCase()}?",
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: _controller,
               focusNode: _focusNode, // 🔥 Ensures the keyboard opens
               autofocus: true, // Ensures it gains focus
-              style: TextStyle(color: Colors.white),
-              cursorColor: Color.fromRGBO(14, 189, 126, 1),
-              decoration: InputDecoration(
+              style: const TextStyle(color: Colors.white),
+              cursorColor: const Color.fromRGBO(14, 189, 126, 1),
+              decoration: const InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ),
@@ -233,17 +235,17 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 widget.onSaved(_controller.text);
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(14, 189, 126, 1),
-                minimumSize: Size(double.infinity, 50),
+                backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                minimumSize: const Size(double.infinity, 50),
               ),
-              child: Text("Save", style: TextStyle(color: Colors.white)),
+              child: const Text("Save", style: TextStyle(color: Colors.white)),
             ),
           ],
         ),

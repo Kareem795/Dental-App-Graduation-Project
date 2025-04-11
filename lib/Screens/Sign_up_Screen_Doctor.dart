@@ -1,18 +1,17 @@
+import 'package:dental_app_graduation_project/Screens/Home_Doctor_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/Login_Screen_Doctor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/Screens/Login_Screen.dart';
 
-import 'home.dart';
-
-class SignUpScreen extends StatefulWidget {
-  static const String route_name = "Sign Up Screen";
-  const SignUpScreen({super.key});
+class SignUpScreenDoctor extends StatefulWidget {
+  static const String route_name = "Sign Up Screen Doctor";
+  const SignUpScreenDoctor({super.key});
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  State<SignUpScreenDoctor> createState() => _SignUpScreenDoctorState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
   bool _isPasswordVisible = false;
 
   @override
@@ -36,8 +35,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              Text(
-                "You can search a course, apply course and find\nscholarship for abroad studies",
+              Text(//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   fontSize: 14,
@@ -129,6 +128,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Clinic name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Phone Number",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -142,10 +159,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Home.route_name);
+                  Navigator.pushNamed(context, HomeDoctorScreen.route_name);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(14, 189, 126, 1),
+                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -163,13 +180,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 15),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, LoginScreen.route_name);
+                  Navigator.pushNamed(context, LoginScreenDoctor.route_name);
                 },
                 child: Text(
                   "Have an account? Log in",
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Color.fromRGBO(14, 189, 126, 1),
+                    color: const Color.fromRGBO(14, 189, 126, 1),
                   ),
                 ),
               ),

@@ -1,19 +1,17 @@
+import 'package:dental_app_graduation_project/Screens/Home_Doctor_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Doctor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/Screens/Sign_up_Screen.dart';
 
-import 'home.dart';
-
-class LoginScreen extends StatefulWidget {
-  static const String route_name = "Login Screen";
-
-  const LoginScreen({super.key});
+class LoginScreenDoctor extends StatefulWidget {
+  static const String route_name = "Login Screen Doctor";
+  const LoginScreenDoctor({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreenDoctor> createState() => _ScreenTestState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ScreenTestState extends State<LoginScreenDoctor> {
   bool _isPasswordVisible = false;
 
   @override
@@ -38,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                "You can search a course, apply course and find\nscholarship for abroad studies",
+                "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   fontSize: 14,
@@ -105,10 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Home.route_name);
+                  Navigator.pushNamed(context, HomeDoctorScreen.route_name);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(14, 189, 126, 1),
+                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -125,24 +123,26 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 15),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  ForgetPasswordDialog.showForgetPasswordDialog(context);
+                },
                 child: Text(
                   "Forgot password",
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Color.fromRGBO(14, 189, 126, 1),
+                    color: const Color.fromRGBO(14, 189, 126, 1),
                   ),
                 ),
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, SignUpScreen.route_name);
+                  Navigator.pushNamed(context, SignUpScreenDoctor.route_name);
                 },
                 child: Text(
                   "Don't have an account? Join us",
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Color.fromRGBO(14, 189, 126, 1),
+                    color: const Color.fromRGBO(14, 189, 126, 1),
                   ),
                 ),
               ),
@@ -174,6 +174,79 @@ class _LoginScreenState extends State<LoginScreen> {
               )
             : null,
       ),
+    );
+  }
+}
+
+class ForgetPasswordDialog {
+  static void showForgetPasswordDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16,
+            right: 16,
+            top: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Forgot Password", 
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold , 
+                  color: Color.fromRGBO(14, 189, 126, 1),
+                )
+              ),
+
+              const SizedBox(height: 15),
+
+              const Text("Enter your email for verification. We will send a 4-digit code to your email.",),
+              
+              const SizedBox(height: 15),
+              
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Email",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              ElevatedButton(
+                onPressed: () {
+                  // EnterCodeScreen.showEnterCodeScreen(context);
+
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: Text(
+                  "Continue",
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 25),
+            ],
+          ),
+        );
+      },
     );
   }
 }
