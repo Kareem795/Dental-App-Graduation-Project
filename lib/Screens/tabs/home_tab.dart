@@ -1,3 +1,5 @@
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,7 +31,7 @@ class HomeTab extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
       decoration: const BoxDecoration(
-        color: Color.fromRGBO(14, 189, 126, 1),
+        color: AppColors.primary,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
@@ -43,15 +45,20 @@ class HomeTab extends StatelessWidget {
             children: [
               Text(
                 "Hi user!",
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 18,
                   color: Colors.white,
                 ),
+
+                // GoogleFonts.poppins(
+                //   fontSize: 18,
+                //   color: Colors.white,
+                // ),
               ),
               const SizedBox(height: 5),
               Text(
                 "Dr dentist application",
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -119,7 +126,7 @@ class HomeTab extends StatelessWidget {
           Text(
             "Community",
             style:
-                GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
+                AppStyle.googleStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Row(
@@ -156,14 +163,16 @@ class HomeTab extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Popular Doctor",
-                  style: GoogleFonts.poppins(
-                      fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                "Popular Doctor",
+                style: AppStyle.googleStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               TextButton(
                   onPressed: () {},
                   child: const Text(
                     "See all >",
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(color: AppColors.primary),
                   )),
             ],
           ),
@@ -201,14 +210,16 @@ class HomeTab extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Feature Doctor",
-                  style: GoogleFonts.poppins(
-                      fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                "Feature Doctor",
+                style: AppStyle.googleStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               TextButton(
                   onPressed: () {},
                   child: const Text(
                     "See all >",
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(color: AppColors.primary),
                   )),
             ],
           ),
@@ -243,9 +254,21 @@ class HomeTab extends StatelessWidget {
           const SizedBox(height: 10),
           Text(name,
               style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+
+              // AppStyle.googleStyle(fontWeight: FontWeight.bold),
+              // softWrap: true,
+              // overflow: TextOverflow.ellipsis,
+              //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Help
+
               textAlign: TextAlign.center),
           Text(specialty,
               style: GoogleFonts.poppins(color: Colors.grey),
+
+              // AppStyle.googleStyle(color: Colors.grey),
+              // softWrap: true,
+              // overflow: TextOverflow.ellipsis,
+              //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Help
+
               textAlign: TextAlign.center),
           const SizedBox(height: 5),
           const Icon(Icons.star, color: Colors.orange, size: 20),
@@ -268,11 +291,15 @@ class HomeTab extends StatelessWidget {
           children: [
             Image.asset(image, height: 50),
             const SizedBox(height: 5),
-            Text(name,
-                style: GoogleFonts.poppins(
-                    fontSize: 14, fontWeight: FontWeight.bold)),
-            Text(rating,
-                style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey)),
+            Text(
+              name,
+              style: AppStyle.googleStyle(
+                  fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              rating,
+              style: AppStyle.googleStyle(fontSize: 12, color: Colors.grey),
+            ),
           ],
         ),
       ),

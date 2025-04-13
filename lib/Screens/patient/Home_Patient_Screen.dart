@@ -1,10 +1,12 @@
-import 'package:dental_app_graduation_project/Screens/Patiant_Profile_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Setting_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/search_tab.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Patiant_Profile_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/settings/Setting_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Favourite_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Home_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Massege_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'tabs/favourite_tab.dart';
-import 'tabs/home_tab.dart';
-import 'tabs/massege_tab.dart';
+
 
 class HomePatientScreen extends StatefulWidget {
   static const String route_name = "Home Patient Screen";
@@ -30,7 +32,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(14, 189, 126, 1),
+                color: AppColors.primary,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(25),
                     bottomRight: Radius.circular(25)),
@@ -96,7 +98,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
         },
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
-        backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+        backgroundColor: AppColors.primary,
         //selectedFontSize: 25,
         iconSize: 25,
         showSelectedLabels: true,

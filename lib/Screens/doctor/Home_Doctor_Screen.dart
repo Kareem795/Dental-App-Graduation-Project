@@ -1,12 +1,16 @@
-import 'package:dental_app_graduation_project/Screens/Medical_Report_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Patiant_Profile_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Setting_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/favourite_tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/home_tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/massege_tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/search_tab.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Add_Available_Appointments_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Medical_Report_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Xray_Upload_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Patiant_Profile_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/settings/Setting_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Favourite_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Home_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Massege_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 class HomeDoctorScreen extends StatefulWidget {
   static const String route_name = "Home Doctor Screen";
@@ -27,7 +31,7 @@ class _HomeDoctorScreenState extends State<HomeDoctorScreen> {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(14, 189, 126, 1),
+                color: AppColors.primary,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(25),
                     bottomRight: Radius.circular(25)),
@@ -86,10 +90,17 @@ class _HomeDoctorScreenState extends State<HomeDoctorScreen> {
               leading: const Icon(FontAwesomeIcons.xRay),
               title: const Text("Upload X-ray"),
               onTap: () {
-                // Navigator.pushNamed(context, ProfileSetupScreen.route_name);
+                Navigator.pushNamed(context, XrayUploadScreen.route_name);
               },
             ),
 
+            ListTile(
+              // leading: const Icon(FontAwesomeIcons.xRay),
+              leading: Icon(FontAwesomeIcons.calendarCheck),
+              title: const Text("Add Appointment"),
+              onTap: () {
+                Navigator.pushNamed(context, AddAvailableAppointmentsScreen.route_name);              },
+            ),
 
             const Divider(),
             ListTile(
@@ -112,7 +123,7 @@ class _HomeDoctorScreenState extends State<HomeDoctorScreen> {
         },
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
-        backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+        backgroundColor: AppColors.primary,
         //selectedFontSize: 25,
         iconSize: 25,
         showSelectedLabels: true,

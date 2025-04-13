@@ -1,3 +1,4 @@
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -73,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ListTile(
       leading: Icon(
         icon,
-        color: const Color.fromRGBO(14, 189, 126, 1),
+        color: AppColors.primary,
       ),
       title: Text(title),
       trailing: trailingText != null
@@ -87,7 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return SwitchListTile(
       title: Text(title),
       value: value,
-      activeColor: const Color.fromRGBO(14, 189, 126, 1),
+      activeColor: AppColors.primary,
       onChanged: onChanged,
     );
   }

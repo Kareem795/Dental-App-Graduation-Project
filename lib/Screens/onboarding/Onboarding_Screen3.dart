@@ -1,12 +1,11 @@
-import 'package:dental_app_graduation_project/Screens/Onboarding_Screen2.dart';
-import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-
-class OnboardingScreen1 extends StatelessWidget {
-  static const String route_name = "Onboarding Screen 1";
-  const OnboardingScreen1({super.key});
+class OnboardingScreen3 extends StatelessWidget {
+  static const String route_name = "Onboarding Screen 3";
+  const OnboardingScreen3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class OnboardingScreen1 extends StatelessWidget {
               width: 200,
               height: 200,
               decoration: const BoxDecoration(
-                color: Color.fromRGBO(14, 189, 126, 1),
+                color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
             ),
@@ -33,7 +32,7 @@ class OnboardingScreen1 extends StatelessWidget {
               Center(
                 child: ClipOval(
                   child: Image.asset(
-                    'assets/OnboardingScreen1_imge.png', // استبدلي بالصورة الصحيحة
+                    'assets/OnboardingScreen3_imge.png', // استبدلي بالصورة الصحيحة
                     width: 250,
                     height: 250,
                     fit: BoxFit.cover,
@@ -42,19 +41,24 @@ class OnboardingScreen1 extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                "Find Trusted Doctors",
-                style: GoogleFonts.poppins(
+                "Easy Appointments",
+                style: AppStyle.googleStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
+
+                // GoogleFonts.poppins(
+                //   fontSize: 22,
+                //   fontWeight: FontWeight.bold,
+                // ),
               ),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
-                  "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of it over 2000 years old.",
+                  "choose your suitable appointment ",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 14,
                     color: Colors.grey[600],
                   ),
@@ -65,10 +69,10 @@ class OnboardingScreen1 extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, OnboardingScreen2.route_name);
+                    Navigator.pushNamed(context, SignUpScreen.route_name);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -76,7 +80,7 @@ class OnboardingScreen1 extends StatelessWidget {
                   ),
                   child: Text(
                     "Get Started",
-                    style: GoogleFonts.poppins(
+                    style: AppStyle.googleStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -91,7 +95,7 @@ class OnboardingScreen1 extends StatelessWidget {
                 },
                 child: Text(
                   "Skip",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
                   ),

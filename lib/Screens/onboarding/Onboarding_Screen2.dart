@@ -1,11 +1,12 @@
-import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/onboarding/Onboarding_Screen3.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-
-class OnboardingScreen3 extends StatelessWidget {
-  static const String route_name = "Onboarding Screen 3";
-  const OnboardingScreen3({super.key});
+class OnboardingScreen2 extends StatelessWidget {
+  static const String route_name = "Onboarding Screen 2";
+  const OnboardingScreen2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class OnboardingScreen3 extends StatelessWidget {
               width: 200,
               height: 200,
               decoration: const BoxDecoration(
-                color: Color.fromRGBO(14, 189, 126, 1),
+                color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
             ),
@@ -32,7 +33,7 @@ class OnboardingScreen3 extends StatelessWidget {
               Center(
                 child: ClipOval(
                   child: Image.asset(
-                    'assets/OnboardingScreen3_imge.png', // استبدلي بالصورة الصحيحة
+                    'assets/OnboardingScreen2_imge.png', // استبدلي بالصورة الصحيحة
                     width: 250,
                     height: 250,
                     fit: BoxFit.cover,
@@ -41,19 +42,24 @@ class OnboardingScreen3 extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                "Easy Appointments",
-                style: GoogleFonts.poppins(
+                "Xray Analysis",
+                style: AppStyle.googleStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
+
+                // GoogleFonts.poppins(
+                //   fontSize: 22,
+                //   fontWeight: FontWeight.bold,
+                // ),
               ),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
-                  "choose your suitable appointment ",
+                  "Reading and analyzing pictures of xray in few seconds",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 14,
                     color: Colors.grey[600],
                   ),
@@ -64,10 +70,10 @@ class OnboardingScreen3 extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, SignUpScreen.route_name);
+                    Navigator.pushNamed(context, OnboardingScreen3.route_name);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -75,7 +81,7 @@ class OnboardingScreen3 extends StatelessWidget {
                   ),
                   child: Text(
                     "Get Started",
-                    style: GoogleFonts.poppins(
+                    style: AppStyle.googleStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -90,7 +96,7 @@ class OnboardingScreen3 extends StatelessWidget {
                 },
                 child: Text(
                   "Skip",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
                   ),

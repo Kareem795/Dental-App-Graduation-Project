@@ -1,6 +1,6 @@
-import 'package:dental_app_graduation_project/Screens/Doctor_details_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Show_Doctor_details_Screen.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-
 
 class HaertTab extends StatelessWidget {
   static const String route_name = "Haert Tab";
@@ -49,7 +49,6 @@ class HaertTab extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  
                   // Search Bar,
                   TextField(
                     decoration: InputDecoration(
@@ -68,7 +67,7 @@ class HaertTab extends StatelessWidget {
                     child: GridView.builder(
                       itemCount: favouriteDoctors.length,
                       gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
@@ -111,8 +110,8 @@ class HaertTab extends StatelessWidget {
                       children: [
                         FeatureDoctorCard("Dr. Crick", "3.7",
                             "assets/Community_image_home.png"),
-                        FeatureDoctorCard(
-                            "Dr. Strain", "3.0", "assets/Popular_image_home.png"),
+                        FeatureDoctorCard("Dr. Strain", "3.0",
+                            "assets/Popular_image_home.png"),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
                             "assets/Feature1_image_home.png"),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
@@ -132,7 +131,6 @@ class HaertTab extends StatelessWidget {
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -204,7 +202,7 @@ class _DoctorCardState extends State<DoctorCard> {
           Text(
             widget.specialty,
             style: const TextStyle(
-              color: Color.fromRGBO(14, 189, 126, 1),
+              color: AppColors.primary,
             ),
           ),
         ],

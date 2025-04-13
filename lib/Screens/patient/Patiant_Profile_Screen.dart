@@ -1,3 +1,4 @@
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+        backgroundColor: AppColors.primary,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -38,7 +39,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               padding: const EdgeInsets.all(20),
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Color.fromRGBO(14, 189, 126, 1),
+                color: AppColors.primary,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),
@@ -59,7 +60,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         child: Icon(
                           Icons.camera_alt,
                           size: 25,
-                          color: Color.fromRGBO(14, 189, 126, 1),
+                          color: AppColors.primary,
                         ),
                       ),
                     ),
@@ -97,7 +98,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                      backgroundColor: AppColors.primary,
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -129,7 +130,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             suffixIcon: const Icon(
               Icons.edit,
-              color: Color.fromRGBO(14, 189, 126, 1),
+              color: AppColors.primary,
             ),
           ),
           controller: TextEditingController(text: value),
@@ -222,7 +223,7 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
               focusNode: _focusNode, // 🔥 Ensures the keyboard opens
               autofocus: true, // Ensures it gains focus
               style: const TextStyle(color: Colors.white),
-              cursorColor: const Color.fromRGBO(14, 189, 126, 1),
+              cursorColor: AppColors.primary,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
@@ -242,7 +243,7 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                backgroundColor: AppColors.primary,
                 minimumSize: const Size(double.infinity, 50),
               ),
               child: const Text("Save", style: TextStyle(color: Colors.white)),

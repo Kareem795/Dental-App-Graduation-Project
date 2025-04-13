@@ -1,5 +1,5 @@
+import 'package:dental_app_graduation_project/Screens/onboarding/Onboarding_Screen1.dart';
 import 'package:flutter/material.dart';
-import '../Onboarding_Screen1.dart';
 
 class Splash extends StatefulWidget {
   static const String route_name = "Splash";

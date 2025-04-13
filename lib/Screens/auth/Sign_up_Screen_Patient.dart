@@ -1,17 +1,19 @@
-import 'package:dental_app_graduation_project/Screens/Home_Doctor_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Login_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Login_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Home_Patient_Screen.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class SignUpScreenDoctor extends StatefulWidget {
-  static const String route_name = "Sign Up Screen Doctor";
-  const SignUpScreenDoctor({super.key});
+class SignUpScreen extends StatefulWidget {
+  static const String route_name = "Sign Up Screen";
+  const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreenDoctor> createState() => _SignUpScreenDoctorState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool _isPasswordVisible = false;
 
   @override
@@ -27,18 +29,24 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
               const SizedBox(height: 80),
               Text(
                 "Join us to start searching",
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
+
+                // GoogleFonts.poppins(
+                //   fontSize: 22,
+                //   fontWeight: FontWeight.bold,
+                //   color: Colors.black87,
+                // ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              Text(//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
+              Text(
+                "You can search a course, apply course and find\nscholarship for abroad studies",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
@@ -128,41 +136,23 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: "Clinic name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: "Phone Number",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
               const SizedBox(height: 10),
               Row(
                 children: [
                   Checkbox(value: true, onChanged: (value) {}),
                   Text(
                     "I agree with the Terms of Service & Privacy Policy",
-                    style: GoogleFonts.poppins(fontSize: 12),
+                    style: AppStyle.googleStyle(fontSize: 12),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, HomeDoctorScreen.route_name);
+                  Navigator.pushNamed(context, HomePatientScreen.route_name);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                  backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -170,26 +160,41 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                 ),
                 child: Text(
                   "Sign up",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+
                 ),
               ),
               const SizedBox(height: 15),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, LoginScreenDoctor.route_name);
+                  Navigator.pushNamed(context, LoginScreen.route_name);
                 },
                 child: Text(
                   "Have an account? Log in",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 14,
-                    color: const Color.fromRGBO(14, 189, 126, 1),
+                    color: AppColors.primary,
                   ),
+
                 ),
               ),
+              const SizedBox(height: 5),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, SignUpScreenDoctor.route_name);
+                  },
+                  child: Text(
+                    "I am a Doctor",
+                    style: AppStyle.googleStyle(
+                      fontSize: 14,
+                      color: AppColors.primary,
+                    ),
+
+                  ))
             ],
           ),
         ),

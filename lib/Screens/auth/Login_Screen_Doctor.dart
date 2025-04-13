@@ -1,7 +1,8 @@
-import 'package:dental_app_graduation_project/Screens/Home_Doctor_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Home_Doctor_Screen.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreenDoctor extends StatefulWidget {
   static const String route_name = "Login Screen Doctor";
@@ -27,21 +28,28 @@ class _ScreenTestState extends State<LoginScreenDoctor> {
               const SizedBox(height: 100),
               Text(
                 "Welcome back",
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
+
+                //  GoogleFonts.poppins(
+                //   fontSize: 22,
+                //   fontWeight: FontWeight.bold,
+                //   color: Colors.black87,
+                // ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
                 "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
+
               ),
 
               const SizedBox(height: 30),
@@ -52,9 +60,7 @@ class _ScreenTestState extends State<LoginScreenDoctor> {
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                       icon: Image.asset(
                         'assets/google.jpeg',
                         width: 20,
@@ -71,12 +77,12 @@ class _ScreenTestState extends State<LoginScreenDoctor> {
                       ),
                     ),
                   ),
+
                   const SizedBox(width: 10),
+                  
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                       icon: Image.asset(
                         'assets/facebook.png',
                         width: 20,
@@ -106,7 +112,7 @@ class _ScreenTestState extends State<LoginScreenDoctor> {
                   Navigator.pushNamed(context, HomeDoctorScreen.route_name);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                  backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -114,11 +120,12 @@ class _ScreenTestState extends State<LoginScreenDoctor> {
                 ),
                 child: Text(
                   "Login",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+
                 ),
               ),
               const SizedBox(height: 15),
@@ -128,10 +135,11 @@ class _ScreenTestState extends State<LoginScreenDoctor> {
                 },
                 child: Text(
                   "Forgot password",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 14,
-                    color: const Color.fromRGBO(14, 189, 126, 1),
+                    color: AppColors.primary,
                   ),
+
                 ),
               ),
               TextButton(
@@ -140,10 +148,11 @@ class _ScreenTestState extends State<LoginScreenDoctor> {
                 },
                 child: Text(
                   "Don't have an account? Join us",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 14,
-                    color: const Color.fromRGBO(14, 189, 126, 1),
+                    color: AppColors.primary,
                   ),
+
                 ),
               ),
             ],
@@ -194,21 +203,17 @@ class ForgetPasswordDialog {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Text("Forgot Password",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  )),
+              const SizedBox(height: 15),
               const Text(
-                "Forgot Password", 
-                style: TextStyle(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.bold , 
-                  color: Color.fromRGBO(14, 189, 126, 1),
-                )
+                "Enter your email for verification. We will send a 4-digit code to your email.",
               ),
-
               const SizedBox(height: 15),
-
-              const Text("Enter your email for verification. We will send a 4-digit code to your email.",),
-              
-              const SizedBox(height: 15),
-              
               TextField(
                 decoration: InputDecoration(
                   labelText: "Email",
@@ -217,16 +222,13 @@ class ForgetPasswordDialog {
                   ),
                 ),
               ),
-
               const SizedBox(height: 25),
-
               ElevatedButton(
                 onPressed: () {
                   // EnterCodeScreen.showEnterCodeScreen(context);
-
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                  backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -234,14 +236,19 @@ class ForgetPasswordDialog {
                 ),
                 child: Text(
                   "Continue",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+
+                  // GoogleFonts.poppins(
+                  //   fontSize: 16,
+                  //   fontWeight: FontWeight.bold,
+                  //   color: Colors.white,
+                  // ),
                 ),
               ),
-              
               const SizedBox(height: 25),
             ],
           ),

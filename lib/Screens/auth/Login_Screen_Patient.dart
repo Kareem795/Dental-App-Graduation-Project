@@ -1,8 +1,8 @@
-import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Home_Patient_Screen.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'Home_Patient_Screen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   static const String route_name = "Login Screen";
@@ -29,18 +29,24 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 100),
               Text(
                 "Welcome back",
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
+
+                // GoogleFonts.poppins(
+                //   fontSize: 22,
+                //   fontWeight: FontWeight.bold,
+                //   color: Colors.black87,
+                // ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
                 "You can search a course, apply course and find\nscholarship for abroad studies",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: AppStyle.googleStyle(
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
@@ -100,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.pushNamed(context, HomePatientScreen.route_name);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                  backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -108,11 +114,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Text(
                   "Login",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+
                 ),
               ),
               const SizedBox(height: 15),
@@ -122,10 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Text(
                   "Forgot password",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 14,
-                    color: const Color.fromRGBO(14, 189, 126, 1),
+                    color: AppColors.primary,
                   ),
+
                 ),
               ),
               TextButton(
@@ -134,10 +142,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Text(
                   "Don't have an account? Join us",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 14,
-                    color: const Color.fromRGBO(14, 189, 126, 1),
+                    color: AppColors.primary,
                   ),
+
                 ),
               ),
             ],
@@ -172,7 +181,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-
 class ForgetPasswordDialog {
   static void showForgetPasswordDialog(BuildContext context) {
     showModalBottomSheet(
@@ -189,21 +197,17 @@ class ForgetPasswordDialog {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Text("Forgot Password",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  )),
+              const SizedBox(height: 15),
               const Text(
-                "Forgot Password", 
-                style: TextStyle(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.bold , 
-                  color: Color.fromRGBO(14, 189, 126, 1),
-                )
+                "Enter your email for verification. We will send a 4-digit code to your email.",
               ),
-
               const SizedBox(height: 15),
-
-              const Text("Enter your email for verification. We will send a 4-digit code to your email.",),
-              
-              const SizedBox(height: 15),
-              
               TextField(
                 decoration: InputDecoration(
                   labelText: "Email",
@@ -212,15 +216,13 @@ class ForgetPasswordDialog {
                   ),
                 ),
               ),
-
               const SizedBox(height: 25),
-
               ElevatedButton(
                 onPressed: () {
                   // Navigator.pushNamed(context, HomePatientScreen.route_name);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                  backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -228,14 +230,14 @@ class ForgetPasswordDialog {
                 ),
                 child: Text(
                   "Continue",
-                  style: GoogleFonts.poppins(
+                  style: AppStyle.googleStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+
                 ),
               ),
-              
               const SizedBox(height: 25),
             ],
           ),
@@ -244,5 +246,3 @@ class ForgetPasswordDialog {
     );
   }
 }
-
-

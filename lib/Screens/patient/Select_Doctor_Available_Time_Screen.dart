@@ -1,3 +1,4 @@
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SelectTimeScreen extends StatefulWidget {
@@ -123,7 +124,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                             ),
                           ),
                           selected: selectedDateIndex == index,
-                          selectedColor: const Color.fromRGBO(14, 189, 126, 1),
+                          selectedColor: AppColors.primary,
                           onSelected: (selected) {
                             setState(() {
                               selectedDateIndex = index;
@@ -149,7 +150,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                        backgroundColor: AppColors.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -173,12 +174,12 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         side:
-                            const BorderSide(color: Color.fromRGBO(14, 189, 126, 1)),
+                            const BorderSide(color: AppColors.primary),
                       ),
                       onPressed: () {},
                       child: const Text("Contact Clinic",
                           style: TextStyle(
-                              color: Color.fromRGBO(14, 189, 126, 1))),
+                              color: AppColors.primary)),
                     ),
                   ),
                 ],

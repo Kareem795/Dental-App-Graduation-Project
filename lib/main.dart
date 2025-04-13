@@ -1,37 +1,31 @@
-import 'package:dental_app_graduation_project/Screens/Doctor_selete_time_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Home_Doctor_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Login_Screen_Doctor.dart';
-import 'package:dental_app_graduation_project/Screens/Login_Screen_Patient.dart';
-import 'package:dental_app_graduation_project/Screens/Medical_Report_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Onboarding_Screen1.dart';
-import 'package:dental_app_graduation_project/Screens/Onboarding_Screen2.dart';
-import 'package:dental_app_graduation_project/Screens/Onboarding_Screen3.dart';
-import 'package:dental_app_graduation_project/Screens/Patiant_Profile_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/Screen_Test.dart';
-import 'package:dental_app_graduation_project/Screens/Setting_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Doctor.dart';
-import 'package:dental_app_graduation_project/Screens/Sign_up_Screen_Patient.dart';
-import 'package:dental_app_graduation_project/Screens/Home_Patient_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/splash/splash.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/home_tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/massege_tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/search_tab.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Login_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Login_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Add_Available_Appointments_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Home_Doctor_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Medical_Report_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Xray_Upload_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/onboarding/Onboarding_Screen1.dart';
+import 'package:dental_app_graduation_project/Screens/onboarding/Onboarding_Screen2.dart';
+import 'package:dental_app_graduation_project/Screens/onboarding/Onboarding_Screen3.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Show_Doctor_details_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Select_Doctor_Available_Time_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Home_Patient_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Patiant_Profile_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/settings/Setting_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/splash/Splash.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Home_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Massege_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
 import 'package:flutter/material.dart';
-import 'Screens/Doctor_details_Screen.dart';
-import 'Screens/tabs/favourite_tab.dart';
+import 'Screens/tabs/Favourite_Tab.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: const FirebaseOptions(
-  //     apiKey: "AIzaSyA4bKWP8vPdqLdirAMwht8w87VfxsZIB-k",
-  //     appId: "1:652989689693:android:339245ab21811c021b42b4",
-  //     messagingSenderId: "dental-app-graduation-project",
-  //     projectId: "dental-app-graduation-project"
-  //   ),
-  // );
-
+  
   runApp(const MyApp());
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -42,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Splash.route_name,
+      initialRoute: OnboardingScreen1.route_name,
       routes: {
         OnboardingScreen1.route_name:(context)=>const OnboardingScreen1(),
         OnboardingScreen2.route_name:(context)=>const OnboardingScreen2(),
@@ -63,6 +57,8 @@ class MyApp extends StatelessWidget {
         LoginScreenDoctor.route_name: (context) => const LoginScreenDoctor(),
         HomeDoctorScreen.route_name: (context) => const HomeDoctorScreen(),
         MedicalReportScreen.route_name: (context) => const MedicalReportScreen(),
+        AddAvailableAppointmentsScreen.route_name: (context) => const AddAvailableAppointmentsScreen(),
+        XrayUploadScreen.route_name: (context) => XrayUploadScreen(),
         // ScreenTest.route_name: (context) => const ScreenTest(),
       },
     );

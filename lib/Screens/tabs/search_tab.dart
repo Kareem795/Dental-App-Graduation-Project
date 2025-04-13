@@ -1,5 +1,6 @@
-import 'package:dental_app_graduation_project/Screens/Doctor_details_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/Doctor_selete_time_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Show_Doctor_details_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Select_Doctor_Available_Time_Screen.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SearchTab extends StatefulWidget {
@@ -101,8 +102,7 @@ class _SearchTabState extends State<SearchTab> {
                                               Text(
                                                 doctor["specialty"],
                                                 style: const TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      14, 189, 126, 1),
+                                                  color: AppColors.primary,
                                                 ),
                                               ),
 
@@ -119,9 +119,7 @@ class _SearchTabState extends State<SearchTab> {
                                                   Row(
                                                     children: [
                                                       const CircleAvatar(
-                                                        backgroundColor:
-                                                            Color.fromRGBO(14,
-                                                                189, 126, 1),
+                                                        backgroundColor: AppColors.primary,
                                                         minRadius: 6,
                                                       ),
                                                       const SizedBox(
@@ -141,9 +139,7 @@ class _SearchTabState extends State<SearchTab> {
                                                   Row(
                                                     children: [
                                                       const CircleAvatar(
-                                                        backgroundColor:
-                                                            Color.fromRGBO(14,
-                                                                189, 126, 1),
+                                                        backgroundColor: AppColors.primary,
                                                         minRadius: 6,
                                                       ),
                                                       const SizedBox(
@@ -193,8 +189,7 @@ class _SearchTabState extends State<SearchTab> {
                                               const Text(
                                                 "Next Available",
                                                 style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        14, 189, 126, 1),
+                                                    color: AppColors.primary,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -209,7 +204,7 @@ class _SearchTabState extends State<SearchTab> {
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor:
-                                                const Color.fromRGBO(14, 189, 126, 1),
+                                                AppColors.primary,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10),

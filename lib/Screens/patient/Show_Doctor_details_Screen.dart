@@ -1,4 +1,5 @@
-import 'package:dental_app_graduation_project/Screens/Doctor_selete_time_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Select_Doctor_Available_Time_Screen.dart';
+import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
               colors: [
                 Colors.blue.shade50,
                 Colors.white,
-                const Color.fromRGBO(14, 189, 126, 1),
+                AppColors.primary,
               ],
             ),
           ),
@@ -117,7 +118,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                       "\$ ",
                                       style: TextStyle(
                                           color:
-                                              Color.fromRGBO(14, 189, 126, 1),
+                                              AppColors.primary,
                                           fontSize: 20),
                                     ),
                                     Text("25.00/hr",
@@ -132,7 +133,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                         Center(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(14, 189, 126, 1),
+                              backgroundColor: AppColors.primary,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -202,7 +203,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(Icons.check_circle,
-              color: Color.fromRGBO(14, 189, 126, 1), size: 20),
+              color: AppColors.primary, size: 20),
           const SizedBox(width: 8),
           Expanded(child: Text(text)),
         ],
