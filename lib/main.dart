@@ -19,33 +19,46 @@ import 'package:dental_app_graduation_project/Screens/splash/Splash.dart';
 import 'package:dental_app_graduation_project/Screens/tabs/Home_Tab.dart';
 import 'package:dental_app_graduation_project/Screens/tabs/Massege_Tab.dart';
 import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
+import 'package:dental_app_graduation_project/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Screens/tabs/Favourite_Tab.dart';
 
 void main() async {
-  
-  runApp(const MyApp());
-  
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // التحقق من حالة تسجيل الدخول في Firebase
+  User? user = FirebaseAuth.instance.currentUser;
+
+  // تحديد الصفحة التي سيتم عرضها بناءً على حالة المستخدم
+  String initialRoute = user != null ? HomePatientScreen.route_name : OnboardingScreen1.route_name;
+
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
 
-  // This widget is the root of your application.
+  const MyApp({super.key, required this.initialRoute});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: OnboardingScreen1.route_name,
+      initialRoute: initialRoute,  // استخدام المتغير المحدد للصفحة الابتدائية
       routes: {
-        OnboardingScreen1.route_name:(context)=>const OnboardingScreen1(),
-        OnboardingScreen2.route_name:(context)=>const OnboardingScreen2(),
-        OnboardingScreen3.route_name:(context)=>const OnboardingScreen3(),
+        OnboardingScreen1.route_name: (context) => const OnboardingScreen1(),
+        OnboardingScreen2.route_name: (context) => const OnboardingScreen2(),
+        OnboardingScreen3.route_name: (context) => const OnboardingScreen3(),
         SignUpScreen.route_name: (context) => const SignUpScreen(),
         LoginScreen.route_name: (context) => const LoginScreen(),
-        HomePatientScreen.route_name: (context)=> const HomePatientScreen(),
-        HaertTab.route_name:(context)=>const HaertTab(),
-        Splash.route_name:(context)=>const Splash(),
+        HomePatientScreen.route_name: (context) => const HomePatientScreen(),
+        HaertTab.route_name: (context) => const HaertTab(),
+        Splash.route_name: (context) => const Splash(),
         DoctorDetailsScreen.route_name: (context) => const DoctorDetailsScreen(),
         HomeTab.route_name: (context) => const HomeTab(),
         MassegeTab.route_name: (context) => const MassegeTab(),
@@ -63,4 +76,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-  }
+}

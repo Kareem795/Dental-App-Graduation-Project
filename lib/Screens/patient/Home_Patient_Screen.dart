@@ -1,3 +1,4 @@
+import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
 import 'package:dental_app_graduation_project/Screens/patient/Patiant_Profile_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/settings/Setting_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/tabs/Favourite_Tab.dart';
@@ -5,6 +6,7 @@ import 'package:dental_app_graduation_project/Screens/tabs/Home_Tab.dart';
 import 'package:dental_app_graduation_project/Screens/tabs/Massege_Tab.dart';
 import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
@@ -83,7 +85,11 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text("Logout", style: TextStyle(color: Colors.red)),
-              onTap: () {},
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                //! رجّع المستخدم إلى شاشة تسجيل الدخول أو الشاشة المناسبة ليك
+                Navigator.pushReplacementNamed(context, SignUpScreen.route_name);
+              },
             ),
           ],
         ),

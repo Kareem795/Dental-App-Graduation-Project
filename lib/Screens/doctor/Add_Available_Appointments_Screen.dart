@@ -188,7 +188,7 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(color: Colors.black12, blurRadius: 4)
                           ],
                         ),
@@ -250,7 +250,7 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                       color: Colors.black12, blurRadius: 3)
                                 ],
@@ -293,7 +293,7 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       margin: const EdgeInsets.only(bottom: 16),

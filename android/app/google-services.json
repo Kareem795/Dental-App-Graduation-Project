@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "229055723406",
+    "project_id": "dental-app-graduation-pr-5d37a",
+    "storage_bucket": "dental-app-graduation-pr-5d37a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229055723406:android:bb680164ea8ba4dbdb16df",
+        "android_client_info": {
+          "package_name": "com.example.dental_app_graduation_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmuPnUTauUSn_uiE9_BBzF7NOzvLCuWYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
