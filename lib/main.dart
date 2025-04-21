@@ -1,8 +1,8 @@
 import 'package:dental_app_graduation_project/Screens/Screen_Test.dart';
-import 'package:dental_app_graduation_project/Screens/auth/Login_Screen_Doctor.dart';
-import 'package:dental_app_graduation_project/Screens/auth/Login_Screen_Patient.dart';
-import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Doctor.dart';
-import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/login/Login_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/login/Login_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Patient.dart';
 import 'package:dental_app_graduation_project/Screens/doctor/Add_Available_Appointments_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/doctor/Home_Doctor_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/doctor/Medical_Report_Screen.dart';
@@ -23,33 +23,48 @@ import 'package:dental_app_graduation_project/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'Screens/tabs/Favourite_Tab.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+
+  //! Firebase
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+
+
+  //! Supabase
+  await Supabase.initialize(
+    url: 'https://lczxandridtaayuhkxpe.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjenhhbmRyaWR0YWF5dWhreHBlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5OTgzNjEsImV4cCI6MjA2MDU3NDM2MX0.Bb7OfELOFrwUP_4pcM6G7KEYGLJN3aTFTbS57er8bPM',
   );
 
   // التحقق من حالة تسجيل الدخول في Firebase
-  User? user = FirebaseAuth.instance.currentUser;
+  // User? user = FirebaseAuth.instance.currentUser;
 
   // تحديد الصفحة التي سيتم عرضها بناءً على حالة المستخدم
-  String initialRoute = user != null ? HomePatientScreen.route_name : OnboardingScreen1.route_name;
+  // String initialRoute = user != null ? HomePatientScreen.route_name : OnboardingScreen1.route_name;
 
-  runApp(MyApp(initialRoute: initialRoute));
+  // runApp(MyApp(initialRoute: initialRoute));
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String initialRoute;
+  // final String initialRoute;
 
-  const MyApp({super.key, required this.initialRoute});
+  // const MyApp({super.key, required this.initialRoute});
+
+  const MyApp({super.key,});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: initialRoute,  // استخدام المتغير المحدد للصفحة الابتدائية
+      // initialRoute: initialRoute,  // استخدام المتغير المحدد للصفحة الابتدائية
+      initialRoute: Splash.route_name,  // استخدام المتغير المحدد للصفحة الابتدائية
       routes: {
         OnboardingScreen1.route_name: (context) => const OnboardingScreen1(),
         OnboardingScreen2.route_name: (context) => const OnboardingScreen2(),

@@ -1,4 +1,4 @@
-import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Patient.dart';
 import 'package:dental_app_graduation_project/Screens/onboarding/Onboarding_Screen3.dart';
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:dental_app_graduation_project/utils/app_style.dart';

@@ -1,4 +1,4 @@
-import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Patient.dart';
 import 'package:dental_app_graduation_project/Screens/patient/Patiant_Profile_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/settings/Setting_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/tabs/Favourite_Tab.dart';
@@ -8,7 +8,7 @@ import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePatientScreen extends StatefulWidget {
   static const String route_name = "Home Patient Screen";
@@ -86,8 +86,18 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text("Logout", style: TextStyle(color: Colors.red)),
               onTap: () async {
-                await FirebaseAuth.instance.signOut();
-                //! رجّع المستخدم إلى شاشة تسجيل الدخول أو الشاشة المناسبة ليك
+
+                //! Firebase
+
+                // await FirebaseAuth.instance.signOut();
+                // // رجّع المستخدم إلى شاشة تسجيل الدخول أو الشاشة المناسبة ليك
+                // Navigator.pushReplacementNamed(context, SignUpScreen.route_name);
+
+                //! Supabase
+
+                await Supabase.instance.client.auth.signOut();
+
+                // رجّع المستخدم إلى شاشة تسجيل الدخول أو أي شاشة مناسبة
                 Navigator.pushReplacementNamed(context, SignUpScreen.route_name);
               },
             ),

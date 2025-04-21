@@ -1,3 +1,4 @@
+import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Doctor.dart';
 import 'package:dental_app_graduation_project/Screens/doctor/Add_Available_Appointments_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/doctor/Medical_Report_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/doctor/Xray_Upload_Screen.dart';
@@ -10,6 +11,7 @@ import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 class HomeDoctorScreen extends StatefulWidget {
@@ -106,7 +108,21 @@ class _HomeDoctorScreenState extends State<HomeDoctorScreen> {
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text("Logout", style: TextStyle(color: Colors.red)),
-              onTap: () {},
+              onTap: () async {
+                
+                //! Firebase
+
+                // await FirebaseAuth.instance.signOut();
+                // // رجّع المستخدم إلى شاشة تسجيل الدخول أو الشاشة المناسبة ليك
+                // Navigator.pushReplacementNamed(context, SignUpScreen.route_name);
+
+                //! Supabase
+
+                await Supabase.instance.client.auth.signOut();
+
+                // رجّع المستخدم إلى شاشة تسجيل الدخول أو أي شاشة مناسبة
+                Navigator.pushReplacementNamed(context, SignUpScreenDoctor.route_name);
+              },
             ),
             
             

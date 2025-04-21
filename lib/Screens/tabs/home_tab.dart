@@ -44,7 +44,7 @@ class HomeTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hi user!",
+                "Hi User!",
                 style: AppStyle.googleStyle(
                   fontSize: 18,
                   color: Colors.white,

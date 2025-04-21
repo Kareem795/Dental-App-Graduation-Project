@@ -1,43 +1,57 @@
-import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Patient.dart';
-import 'package:dental_app_graduation_project/Screens/patient/Home_Patient_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/doctor/Home_Doctor_Screen.dart';
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String route_name = "Login Screen";
-
-  const LoginScreen({super.key});
+class LoginScreenDoctor extends StatefulWidget {
+  static const String route_name = "Login Screen Doctor";
+  const LoginScreenDoctor({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreenDoctor> createState() => _ScreenTestState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ScreenTestState extends State<LoginScreenDoctor> {
   bool _isPasswordVisible = false;
 
+  
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  //! Supabase login
+
   Future<void> _login() async {
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+  try {
+    final AuthResponse res = await Supabase.instance.client.auth.signInWithPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
-      );
+    final user = res.user;
 
-      Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
-    } catch (e) {
+    if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('خطأ في تسجيل الدخول: ${e.toString()}')),
+        const SnackBar(content: Text('تم تسجيل الدخول بنجاح!')),
+      );
+      Navigator.pushReplacementNamed(context, HomeDoctorScreen.route_name);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('فشل تسجيل الدخول، تحقق من البيانات')),
       );
     }
+  } on AuthException catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('خطأ: ${e.message}')),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('حدث خطأ غير متوقع أثناء تسجيل الدخول')),
+    );
+    print('Login error: $e');
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -57,18 +71,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
+
+                //  GoogleFonts.poppins(
+                //   fontSize: 22,
+                //   fontWeight: FontWeight.bold,
+                //   color: Colors.black87,
+                // ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
-                "You can search a course, apply course and find\nscholarship for abroad studies",
+                "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
                 textAlign: TextAlign.center,
                 style: AppStyle.googleStyle(
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
               ),
+
               const SizedBox(height: 30),
+
+              // أزرار تسجيل الدخول عبر Google و Facebook
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -76,9 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       icon: Image.asset(
-                        'assets/google.jpeg',
-                        width: 20,
-                        height: 20,
+                        'assets/google.png',
+                        width: 40,
+                        height: 40,
                       ),
                       label: const Text("Google"),
                       style: ElevatedButton.styleFrom(
@@ -97,8 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {},
                       icon: Image.asset(
                         'assets/facebook.png',
-                        width: 20,
-                        height: 20,
+                        width: 40,
+                        height: 40,
                       ),
                       label: const Text("Facebook"),
                       style: ElevatedButton.styleFrom(
@@ -113,18 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 30),
-              _buildTextField(
-                label: "Email",
-                controller: _emailController,
-              ),
-              const SizedBox(height: 15),
-              _buildTextField(
-                label: "Password",
-                isPassword: true,
-                controller: _passwordController,
-              ),
-              const SizedBox(height: 10),
+              _buildTextFormField(label: "Email" , controller: _emailController),
+              const SizedBox(height: 30),
+              _buildTextFormField(label: "Password", isPassword: true , controller: _passwordController),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: _login,
                 style: ElevatedButton.styleFrom(
@@ -158,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, SignUpScreen.route_name);
+                  Navigator.pushNamed(context, SignUpScreenDoctor.route_name);
                 },
                 child: Text(
                   "Don't have an account? Join us",
@@ -175,13 +192,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField({
+  Widget _buildTextFormField({
     required String label,
     bool isPassword = false,
     required TextEditingController controller,
   }) {
-    return TextField(
-      controller: controller,
+    return TextFormField(
       obscureText: isPassword ? !_isPasswordVisible : false,
       decoration: InputDecoration(
         labelText: label,
@@ -232,7 +248,7 @@ class ForgetPasswordDialog {
                 "Enter your email for verification. We will send a 4-digit code to your email.",
               ),
               const SizedBox(height: 15),
-              TextField(
+              TextFormField(
                 decoration: InputDecoration(
                   labelText: "Email",
                   border: OutlineInputBorder(
@@ -243,7 +259,7 @@ class ForgetPasswordDialog {
               const SizedBox(height: 25),
               ElevatedButton(
                 onPressed: () {
-                  // تنفيذ إرسال رمز إعادة التعيين هنا
+                  // EnterCodeScreen.showEnterCodeScreen(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
@@ -259,6 +275,12 @@ class ForgetPasswordDialog {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+
+                  // GoogleFonts.poppins(
+                  //   fontSize: 16,
+                  //   fontWeight: FontWeight.bold,
+                  //   color: Colors.white,
+                  // ),
                 ),
               ),
               const SizedBox(height: 25),

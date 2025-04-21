@@ -1,8 +1,9 @@
-import 'package:dental_app_graduation_project/Screens/auth/Login_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/login/Login_Screen_Doctor.dart';
 import 'package:dental_app_graduation_project/Screens/doctor/Home_Doctor_Screen.dart';
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:dental_app_graduation_project/utils/app_style.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpScreenDoctor extends StatefulWidget {
   static const String route_name = "Sign Up Screen Doctor";
@@ -14,6 +15,52 @@ class SignUpScreenDoctor extends StatefulWidget {
 
 class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
   bool _isPasswordVisible = false;
+  bool _isTermsAccepted = false;
+  bool _isDoctor = false;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _ClinicnameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  //! Supabase Sign up
+
+  Future<void> _signUp() async {
+    try {
+      final AuthResponse res = await Supabase.instance.client.auth.signUp(
+        data: {
+          'name': _nameController.text.trim(), // حفظ الاسم في metadata
+        },
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      final user = res.user;
+
+      if (user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم التسجيل بنجاح!')),
+        );
+        Navigator.pushReplacementNamed(context, HomeDoctorScreen.route_name);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('حدث خطأ أثناء التسجيل')),
+        );
+      }
+    } on AuthException catch (e) {
+      // لو حصل خطأ من supabase
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('خطأ: ${e.message}')),
+      );
+    } catch (e) {
+      // أي خطأ غير متوقع
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('حدث خطأ غير متوقع، حاول مرة أخرى.')),
+      );
+      print('Sign up error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +106,9 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       icon: Image.asset(
-                        'assets/google.jpeg',
-                        width: 20,
-                        height: 20,
+                        'assets/google.png',
+                        width: 40,
+                        height: 40,
                       ),
                       label: const Text("Google"),
                       style: ElevatedButton.styleFrom(
@@ -80,8 +127,8 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                       onPressed: () {},
                       icon: Image.asset(
                         'assets/facebook.png',
-                        width: 20,
-                        height: 20,
+                        width: 40,
+                        height: 40,
                       ),
                       label: const Text("Facebook"),
                       style: ElevatedButton.styleFrom(
@@ -97,7 +144,8 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                 ],
               ),
               const SizedBox(height: 30),
-              TextField(
+              TextFormField(
+                controller: _nameController,
                 decoration: InputDecoration(
                   labelText: "Name",
                   border: OutlineInputBorder(
@@ -106,7 +154,8 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                 ),
               ),
               const SizedBox(height: 15),
-              TextField(
+              TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: "Email",
                   border: OutlineInputBorder(
@@ -115,7 +164,8 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                 ),
               ),
               const SizedBox(height: 15),
-              TextField(
+              TextFormField(
+                controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: InputDecoration(
                   labelText: "Password",
@@ -137,7 +187,8 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                 ),
               ),
               const SizedBox(height: 15),
-              TextField(
+              TextFormField(
+                controller: _ClinicnameController,
                 decoration: InputDecoration(
                   labelText: "Clinic name",
                   border: OutlineInputBorder(
@@ -146,7 +197,8 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                 ),
               ),
               const SizedBox(height: 15),
-              TextField(
+              TextFormField(
+                controller: _phoneController,
                 decoration: InputDecoration(
                   labelText: "Phone Number",
                   border: OutlineInputBorder(
@@ -157,18 +209,28 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Checkbox(value: true, onChanged: (value) {}),
-                  Text(
-                    "I agree with the Terms of Service & Privacy Policy",
-                    style: AppStyle.googleStyle(fontSize: 12),
+                  Checkbox(
+                    value: _isTermsAccepted,
+                    onChanged: (value) {
+                      setState(() {
+                        _isTermsAccepted = value!;
+                      });
+                    },
+                    activeColor: AppColors.primary,
+                  ),
+                  Expanded(
+                    child: Text(
+                      "I agree with the Terms of Service & Privacy Policy",
+                      style: AppStyle.googleStyle(fontSize: 12),
+                      overflow: TextOverflow.visible,
+                    ),
                   ),
                 ],
               ),
+
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, HomeDoctorScreen.route_name);
-                },
+                onPressed: _signUp,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
@@ -183,7 +245,6 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
-
                 ),
               ),
               const SizedBox(height: 15),
@@ -197,7 +258,6 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
                     fontSize: 14,
                     color: AppColors.primary,
                   ),
-
                 ),
               ),
             ],

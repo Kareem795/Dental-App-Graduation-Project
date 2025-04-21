@@ -1,5 +1,6 @@
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddAvailableAppointmentsScreen extends StatefulWidget {
   const AddAvailableAppointmentsScreen({super.key});
@@ -61,30 +62,76 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
     }
   }
 
-  void _addAppointment() {
-    if (selectedDayOfWeek != null &&
-        selectedMonth != null &&
-        selectedDayNumber != null &&
-        selectedTime != null) {
-      setState(() {
-        availableAppointments.add({
-          'day': selectedDayOfWeek!,
-          'month': selectedMonth!,
-          'date': selectedDayNumber.toString(),
-          'time': selectedTime!.format(context),
-        });
-        selectedDayOfWeek = null;
-        selectedMonth = null;
-        selectedDayNumber = null;
-        selectedTime = null;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Please select day, month, date, and time')),
-      );
-    }
+  // void _addAppointment() {
+  //   if (selectedDayOfWeek != null &&
+  //       selectedMonth != null &&
+  //       selectedDayNumber != null &&
+  //       selectedTime != null) {
+  //     setState(() {
+  //       availableAppointments.add({
+  //         'day': selectedDayOfWeek!,
+  //         'month': selectedMonth!,
+  //         'date': selectedDayNumber.toString(),
+  //         'time': selectedTime!.format(context),
+  //       });
+  //       selectedDayOfWeek = null;
+  //       selectedMonth = null;
+  //       selectedDayNumber = null;
+  //       selectedTime = null;
+  //     });
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //           content: Text('Please select day, month, date, and time')),
+  //     );
+  //   }
+  // }
+
+
+  void _addAppointment() async {
+  if (selectedDayOfWeek == null ||
+      selectedMonth == null ||
+      selectedDayNumber == null ||
+      selectedTime == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('الرجاء اختيار اليوم، الشهر، التاريخ والوقت')),
+    );
+    return;
   }
+
+  try {
+    // تحويل الوقت إلى تنسيق 12 ساعة مع AM/PM
+    final timeString = selectedTime!.format(context);
+    
+    final response = await Supabase.instance.client
+        .from("Doctor's appointments")
+        .insert({
+          'Month': selectedMonth,
+          'Day': selectedDayNumber,
+          'Time': timeString, // سيتم حفظه مثل "8:15 PM"
+        });
+
+    setState(() {
+      availableAppointments.add({
+        'day': selectedDayOfWeek!,
+        'month': selectedMonth!,
+        'date': selectedDayNumber.toString(),
+        'time': timeString,
+      });
+      // مسح الخيارات
+      selectedDayOfWeek = null;
+      selectedMonth = null;
+      selectedDayNumber = null;
+      selectedTime = null;
+    });
+
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('فشل إضافة الموعد: ${e.toString()}')),
+    );
+    print("Error: $e");
+  }
+}
 
   @override
   Widget build(BuildContext context) {

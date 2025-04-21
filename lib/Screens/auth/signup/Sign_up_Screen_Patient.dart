@@ -1,10 +1,11 @@
-import 'package:dental_app_graduation_project/Screens/auth/Login_Screen_Patient.dart';
-import 'package:dental_app_graduation_project/Screens/auth/Sign_up_Screen_Doctor.dart';
+import 'package:dental_app_graduation_project/Screens/auth/login/Login_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Doctor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dental_app_graduation_project/Screens/patient/Home_Patient_Screen.dart';
 import 'package:dental_app_graduation_project/utils/app_colors.dart';
 import 'package:dental_app_graduation_project/utils/app_style.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String route_name = "Sign Up Screen";
@@ -21,58 +22,100 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _signUp() async {
-    try {
-      // محاولة تسجيل المستخدم باستخدام Firebase Authentication
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+  //! Firebase sign up
 
-      // إذا تم التسجيل بنجاح
+  // Future<void> _signUp() async {
+  //   try {
+  //     // محاولة تسجيل المستخدم باستخدام Firebase Authentication
+  //     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: _emailController.text.trim(),
+  //       password: _passwordController.text.trim(),
+  //     );
+
+  //     // إذا تم التسجيل بنجاح
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('تم التسجيل بنجاح!')),
+  //     );
+
+  //     if (userCredential.user != null) {
+  //       // التحقق من وجود المستخدم بعد التسجيل بنجاح
+  //       Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     // معالجة الأخطاء التي قد تحدث أثناء التسجيل
+  //     String errorMessage;
+  //     switch (e.code) {
+  //       case 'email-already-in-use':
+  //         errorMessage = 'هذا البريد الإلكتروني مستخدم بالفعل.';
+  //         break;
+  //       case 'invalid-email':
+  //         errorMessage = 'صيغة البريد الإلكتروني غير صحيحة.';
+  //         break;
+  //       case 'weak-password':
+  //         errorMessage = 'كلمة المرور ضعيفة، يجب أن تكون 6 أحرف أو أكثر.';
+  //         break;
+  //       case 'operation-not-allowed':
+  //         errorMessage = 'تم تعطيل إنشاء الحسابات بهذا الأسلوب.';
+  //         break;
+  //       case 'network-request-failed':
+  //         errorMessage = 'تحقق من اتصال الإنترنت وحاول مرة أخرى.';
+  //         break;
+  //       default:
+  //         errorMessage = 'حدث خطأ غير متوقع: ${e.message}';
+  //     }
+
+  //     // عرض رسالة الخطأ للمستخدم
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text(errorMessage)),
+  //     );
+  //   } catch (e) {
+  //     // في حالة حدوث خطأ غير متوقع
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('حدث خطأ ما. الرجاء المحاولة لاحقاً.')),
+  //     );
+  //     print("Error during sign-up: $e"); // طباعة الخطأ في الكونسول لمساعدتك في debugging
+  //   }
+  // }
+
+  //! Supabase Sign up
+
+  Future<void> _signUp() async {
+  try {
+    final AuthResponse res = await Supabase.instance.client.auth.signUp(
+      
+      data: {
+        'name': _nameController.text.trim(), // حفظ الاسم في metadata
+      },
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+
+    final user = res.user;
+
+    if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('تم التسجيل بنجاح!')),
       );
-
-      if (userCredential.user != null) {
-        // التحقق من وجود المستخدم بعد التسجيل بنجاح
-        Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
-      }
-    } on FirebaseAuthException catch (e) {
-      // معالجة الأخطاء التي قد تحدث أثناء التسجيل
-      String errorMessage;
-      switch (e.code) {
-        case 'email-already-in-use':
-          errorMessage = 'هذا البريد الإلكتروني مستخدم بالفعل.';
-          break;
-        case 'invalid-email':
-          errorMessage = 'صيغة البريد الإلكتروني غير صحيحة.';
-          break;
-        case 'weak-password':
-          errorMessage = 'كلمة المرور ضعيفة، يجب أن تكون 6 أحرف أو أكثر.';
-          break;
-        case 'operation-not-allowed':
-          errorMessage = 'تم تعطيل إنشاء الحسابات بهذا الأسلوب.';
-          break;
-        case 'network-request-failed':
-          errorMessage = 'تحقق من اتصال الإنترنت وحاول مرة أخرى.';
-          break;
-        default:
-          errorMessage = 'حدث خطأ غير متوقع: ${e.message}';
-      }
-
-      // عرض رسالة الخطأ للمستخدم
+      Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+        const SnackBar(content: Text('حدث خطأ أثناء التسجيل')),
       );
-    } catch (e) {
-      // في حالة حدوث خطأ غير متوقع
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('حدث خطأ ما. الرجاء المحاولة لاحقاً.')),
-      );
-      print("Error during sign-up: $e"); // طباعة الخطأ في الكونسول لمساعدتك في debugging
     }
+  } on AuthException catch (e) {
+    // لو حصل خطأ من supabase
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('خطأ: ${e.message}')),
+    );
+  } catch (e) {
+    // أي خطأ غير متوقع
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('حدث خطأ غير متوقع، حاول مرة أخرى.')),
+    );
+    print('Sign up error: $e');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,9 +154,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       icon: Image.asset(
-                        'assets/google.jpeg',
-                        width: 20,
-                        height: 20,
+                        'assets/google.png',
+                        width: 40,
+                        height: 40,
                       ),
                       label: const Text("Google"),
                       style: ElevatedButton.styleFrom(
@@ -132,8 +175,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPressed: () {},
                       icon: Image.asset(
                         'assets/facebook.png',
-                        width: 20,
-                        height: 20,
+                        width: 40,
+                        height: 40,
                       ),
                       label: const Text("Facebook"),
                       style: ElevatedButton.styleFrom(
@@ -149,7 +192,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               const SizedBox(height: 30),
-              TextField(
+              TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
                   labelText: "Name",
@@ -158,8 +201,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              TextField(
+              const SizedBox(height: 30),
+              TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: "Email",
@@ -168,8 +211,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              TextField(
+              const SizedBox(height: 30),
+              TextFormField(
                 controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: InputDecoration(
@@ -191,10 +234,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               Row(
                 children: [
-                  Checkbox(value: true, onChanged: (value) {}),
+                  Checkbox(value: true, onChanged: (value) {} , activeColor: AppColors.primary,),
                   Text(
                     "I agree with the Terms of Service & Privacy Policy",
                     style: AppStyle.googleStyle(fontSize: 12),
