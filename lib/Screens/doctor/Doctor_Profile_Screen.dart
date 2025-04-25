@@ -5,30 +5,65 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PatiantProfileScreen extends StatefulWidget {
-  static const String route_name = "Patiant Profile Screen";
+class DoctorProfileScreen extends StatefulWidget {
+  static const String route_name = "Doctor Profile Screen";
 
-  const PatiantProfileScreen({super.key});
+  const DoctorProfileScreen({super.key});
 
   @override
-  _PatiantProfileScreenState createState() => _PatiantProfileScreenState();
+  _DoctorProfileScreenState createState() => _DoctorProfileScreenState();
 }
 
-class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
+class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   String name = "Kareem Yasser Atef";
   String phone = "+8801800000000";
   String dob = "DD MM YYYY";
   String location = "Add Details";
 
+  //!        I have not completed it yet
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!=======================================================================
+  //!        I have not completed it yet
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  // Load profile data from SharedPreferences
+  Future<void> _loadProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('doctor_name') ?? 'Kareem Yasser Atef';
+      phone = prefs.getString('doctor_phone') ?? '+8801800000000';
+      dob = prefs.getString('doctor_dob') ?? 'DD MM YYYY';
+      location = prefs.getString('doctor_location') ?? 'Add Details';
+    });
+  }
+
+  // Update doctor profile in API and SharedPreferences
   Future<void> updateProfile() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final userId = prefs.getInt('user_id');
+      final doctorId = prefs.getInt('doctor_id');
 
-      if (userId == null) {
+      if (doctorId == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('User ID not found. Please log in again.')),
+          const SnackBar(content: Text('Doctor ID not found. Please log in again.')),
         );
         return;
       }
@@ -37,29 +72,27 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
       final response = await dio.post(
         '${AppConstants.URL}/api/profile/update',
         data: {
-          'user_id': userId,
+          'doctor_id': doctorId,
           'name': name,
           'contact_number': phone,
           'date_of_birth': dob,
           'location': location,
         },
         options: Options(
-          followRedirects: false,
+          followRedirects: true, // Enable redirection handling
           validateStatus: (status) => status! < 500,
         ),
       );
 
-      print('STATUS CODE: ${response.statusCode}');
-      print('RESPONSE: ${response.data}');
-
       if (response.statusCode == 200) {
+        // Update SharedPreferences after successful API call
+        await prefs.setString('doctor_name', name);
+        await prefs.setString('doctor_phone', phone);
+        await prefs.setString('doctor_dob', dob);
+        await prefs.setString('doctor_location', location);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile updated successfully!')),
-        );
-      } else if (response.statusCode == 302) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Redirect detected. Are you logged in?')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -73,8 +106,7 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
     }
   }
 
-  //! Profile Screen 1
-
+  //! Profile Screen UI
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,7 +135,6 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
             ),
             body: SingleChildScrollView(
               child: Column(
-                //! All in this Column
                 children: [
                   Container(
                     padding: const EdgeInsets.only(bottom: 30),
@@ -118,15 +149,14 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
                     child: const Column(
                       children: [
                         CircleAvatar(
-                          radius: 70, //! Control size Image
+                          radius: 70,
                           backgroundImage:
-                              AssetImage(AppAssets.Kemo), // Profile Image
+                              AssetImage(AppAssets.Kemo),
                           child: Align(
-                            alignment: Alignment
-                                .bottomRight, //! Control position camera icon
+                            alignment: Alignment.bottomRight,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
-                              radius: 20, //! Control size camera icon
+                              radius: 20,
                               child: Icon(
                                 Icons.camera_alt,
                                 size: 25,
@@ -156,34 +186,19 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
-                        buildTextField('Name', name,
-                            (value) => setState(() => name = value), context),
-                        buildTextField(
-                            'Contact Number',
-                            phone,
-                            (value) => setState(() => phone = value),
-                            context),
-                        buildTextField('Date of Birth', dob,
-                            (value) => setState(() => dob = value), context),
-                        buildTextField(
-                            'Location',
-                            location,
-                            (value) => setState(() => location = value),
-                            context),
+                        buildTextField('Name', name, (value) => setState(() => name = value), context),
+                        buildTextField('Contact Number', phone, (value) => setState(() => phone = value), context),
+                        buildTextField('Date of Birth', dob, (value) => setState(() => dob = value), context),
+                        buildTextField('Location', location, (value) => setState(() => location = value), context),
                         const SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {
-                            updateProfile();
-                          },
+                          onPressed: updateProfile,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
-                          child: const Text('Continue',
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white)),
+                          child: const Text('Continue', style: TextStyle(fontSize: 16, color: Colors.white)),
                         ),
                       ],
                     ),
@@ -198,58 +213,55 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
   }
 
   Widget buildTextField(String label, String value, Function(String) onUpdate, BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label.toUpperCase(),
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: AppColors.primary,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label.toUpperCase(),
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primary,
+          ),
         ),
-      ),
-      const SizedBox(height: 4),
-      Row(
-        children: [
-          Expanded(
-            child: Text(
-              value.isNotEmpty ? value : ' ',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                value.isNotEmpty ? value : ' ',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-          TextButton.icon(
-            onPressed: () {
-              _navigateAndUpdateField(context, label, value, onUpdate);
-            },
-            icon: const Icon(Icons.edit, size: 16, color: AppColors.primary),
-            label: const Text(
-              'EDIT',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+            TextButton.icon(
+              onPressed: () {
+                _navigateAndUpdateField(context, label, value, onUpdate);
+              },
+              icon: const Icon(Icons.edit, size: 16, color: AppColors.primary),
+              label: const Text(
+                'EDIT',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(50, 30),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
             ),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(50, 30),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-          ),
-        ],
-      ),
-
-      const SizedBox(height: 30,)
-
-    ],
-  );
-}
-
+          ],
+        ),
+        const SizedBox(height: 30),
+      ],
+    );
+  }
 
   void _navigateAndUpdateField(BuildContext context, String fieldName,
       String initialValue, Function(String) onUpdate) {
@@ -265,8 +277,6 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
     );
   }
 }
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 class EditFieldScreen extends StatefulWidget {
   final String fieldName;
@@ -292,7 +302,6 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialValue);
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNode.requestFocus();
     });
@@ -305,7 +314,6 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
     super.dispose();
   }
 
-  //! Profile Screen 2
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -345,8 +353,8 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
                   const SizedBox(height: 10),
                   TextField(
                     controller: _controller,
-                    focusNode: _focusNode, // 🔥 Ensures the keyboard opens
-                    autofocus: true, // Ensures it gains focus
+                    focusNode: _focusNode,
+                    autofocus: true,
                     style: const TextStyle(color: Colors.black),
                     cursorColor: AppColors.primary,
                     decoration: const InputDecoration(

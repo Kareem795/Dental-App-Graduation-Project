@@ -1,4 +1,5 @@
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class MedicalReportScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class MedicalReportScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/illustration.png',
+              Image.asset(AppAssets.Illustration,
                   height: 170), // Medical icon
               const SizedBox(height: 20),
               const Text(
@@ -162,7 +163,7 @@ class _AddRecordScreenState extends State<AddRecordScreen> {
                 children: [
                   const CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage("assets/kareem.jpg")),
+                      backgroundImage: AssetImage(AppAssets.Kemo)),
                   const SizedBox(width: 10),
                   GestureDetector(
                     onTap: () {},

@@ -11,7 +11,7 @@ abstract class AppStyle {
     return GoogleFonts.poppins(
       fontSize: fontSize,
       color: color,
-      fontWeight: fontWeight, // حتى لو null، مش مشكلة
+      fontWeight: fontWeight,
     );
   }
   

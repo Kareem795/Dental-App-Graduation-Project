@@ -1,69 +1,75 @@
-import 'dart:convert';
 import 'package:dental_app_graduation_project/Screens/Auth/Sign%20up/Sign_up_Screen_Doctor.dart';
-import 'package:dental_app_graduation_project/Screens/doctor/Home_Doctor_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/Auth/login/Login_Screen_Patient.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_style.dart';
 import 'package:dental_app_graduation_project/Utils/Widgets/CustomTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:dental_app_graduation_project/Screens/patient/Home_Patient_Screen.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreenDoctor extends StatefulWidget {
-  static const String route_name = "Login Screen Doctor";
-  const LoginScreenDoctor({super.key});
+// ✅ SignUpScreenPatient Widget
+class SignUpScreenPatient extends StatefulWidget {
+  static const String route_name = "Sign Up Screen";
+  const SignUpScreenPatient({super.key});
 
   @override
-  State<LoginScreenDoctor> createState() => _LoginScreenDoctorState();
+  _SignUpScreenPatientState createState() => _SignUpScreenPatientState();
 }
 
-class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
+class _SignUpScreenPatientState extends State<SignUpScreenPatient> {
   bool _isPasswordVisible = false;
+  bool _agreeToTerms = false;
 
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> saveDoctorId(int doctorId) async {
+  Future<void> saveUserId(int userId) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('doctor_id', doctorId);
+    await prefs.setInt('user_id', userId);
   }
 
-  Future<void> loginDoctor() async {
-    final url = Uri.parse(
-        "${AppConstants.URL}/api/doctor/login");
+  Future<void> _signUp() async {
+    final url = Uri.parse('${AppConstants.URL}/api/authen/register');
 
     try {
       final response = await http.post(
         url,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: jsonEncode({
-          "Email": _emailController.text.trim(),
-          "Password": _passwordController.text.trim(),
+          'name': _nameController.text.trim(),
+          'email': _emailController.text.trim(),
+          'password': _passwordController.text.trim(),
         }),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = jsonDecode(response.body);
-        final doctorId = responseData['data']['id'];
+        final data = jsonDecode(response.body);
 
-        await saveDoctorId(doctorId);
+        // خزن الـ ID في SharedPreferences
+        await saveUserId(data['user']['id']);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("تم تسجيل الدخول بنجاح")),
-        );
-
-        Navigator.pushNamed(context, HomeDoctorScreen.route_name);
+        // مثلاً تروحي بعدها للهوم أو تظهر رسالة نجاح
+        Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
       } else {
+        final body = jsonDecode(response.body);
+        final errorMessage = body['message'] ?? 'فشل في عملية التسجيل.';
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("فشل تسجيل الدخول. تحقق من البيانات")),
+          SnackBar(content: Text('خطأ: $errorMessage')),
         );
       }
     } catch (e) {
-      print("Login Error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("حدث خطأ أثناء الاتصال بالخادم: $e")),
+        const SnackBar(content: Text('حدث خطأ غير متوقع.')),
       );
+      print('Sign up error: $e');
     }
   }
 
@@ -85,13 +91,13 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 100),
+                    const SizedBox(height: 80),
                     Text(
-                      "Welcome back",
+                      "Join us to start searching",
                       style: AppStyle.googleStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -99,9 +105,9 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     Text(
-                      "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
+                      "You can search a course, apply course and find\nscholarship for abroad studies",
                       textAlign: TextAlign.center,
                       style: AppStyle.googleStyle(
                         fontSize: 14,
@@ -154,11 +160,22 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
                       ],
                     ),
                     const SizedBox(height: 30),
+
+                    /// Name Field
+                    CustomTextField(
+                      label: "Name",
+                      controller: _nameController,
+                    ),
+                    const SizedBox(height: 30),
+
+                    /// Email Field
                     CustomTextField(
                       label: "Email",
                       controller: _emailController,
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 30),
+
+                    /// Password Field
                     CustomTextField(
                       label: "Password",
                       controller: _passwordController,
@@ -168,8 +185,6 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
                           _isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color:
-                              _isPasswordVisible ? Colors.green : Colors.black,
                         ),
                         onPressed: () {
                           setState(() {
@@ -178,9 +193,28 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 10),
+
+                    const SizedBox(height: 15),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _agreeToTerms,
+                          onChanged: (value) {
+                            setState(() {
+                              _agreeToTerms = value!;
+                            });
+                          },
+                          activeColor: AppColors.primary,
+                        ),
+                        Text(
+                          "I agree with the Terms of Service & Privacy Policy",
+                          style: AppStyle.googleStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: loginDoctor,
+                      onPressed: _signUp,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         shape: RoundedRectangleBorder(
@@ -189,7 +223,7 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
                         minimumSize: const Size(double.infinity, 50),
                       ),
                       child: Text(
-                        "Login",
+                        "Sign up",
                         style: AppStyle.googleStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -200,43 +234,31 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
                     const SizedBox(height: 15),
                     TextButton(
                       onPressed: () {
-                        ForgetPasswordDialog.showForgetPasswordDialog(
-                            context, _emailController);
+                        Navigator.pushNamed(
+                            context, LoginScreenPatient.route_name);
                       },
                       child: Text(
-                        "Forgot password",
+                        "Have an account? Log in",
                         style: AppStyle.googleStyle(
                           fontSize: 14,
                           color: AppColors.primary,
                         ),
                       ),
                     ),
+                    const SizedBox(height: 5),
                     TextButton(
                       onPressed: () {
                         Navigator.pushNamed(
                             context, SignUpScreenDoctor.route_name);
                       },
                       child: Text(
-                        "Don't have an account? Join us",
+                        "I am a Doctor",
                         style: AppStyle.googleStyle(
                           fontSize: 14,
                           color: AppColors.primary,
                         ),
                       ),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, HomeDoctorScreen.route_name);
-                        },
-                        child: Text(
-                          "Kemo Enter",
-                          style: AppStyle.googleStyle(
-                            fontSize: 24,
-                            color: AppColors.primary,
-                          ),
-                        )
-                    )
                   ],
                 ),
               ),
@@ -244,67 +266,6 @@ class _LoginScreenDoctorState extends State<LoginScreenDoctor> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ForgetPasswordDialog {
-  static void showForgetPasswordDialog(BuildContext context, TextEditingController controller) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 16,
-            right: 16,
-            top: 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text("Forgot Password",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  )),
-              const SizedBox(height: 15),
-              const Text(
-                "Enter your email for verification. We will send a 4-digit code to your email.",
-              ),
-              const SizedBox(height: 15),
-              CustomTextField(
-                label: "Email",
-                controller: controller, // استخدم الـ controller هنا
-              ),
-              const SizedBox(height: 25),
-              ElevatedButton(
-                onPressed: () {
-                  // تنفيذ إرسال رمز إعادة التعيين هنا
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: Text(
-                  "Continue",
-                  style: AppStyle.googleStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 25),
-            ],
-          ),
-        );
-      },
     );
   }
 }

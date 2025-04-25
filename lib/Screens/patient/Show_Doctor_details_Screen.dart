@@ -1,5 +1,6 @@
-import 'package:dental_app_graduation_project/Screens/patient/Select_Doctor_Available_Time_Screen.dart';
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/Screens/Patient/Select_Doctor_Available_Time_Screen.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
@@ -61,7 +62,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
-                                "assets/Popular_image_home.png",
+                                AppAssets.Popular_image,
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -176,7 +177,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                 const SizedBox(height: 16),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.asset("assets/map.png", fit: BoxFit.cover),
+                  child: Image.asset(AppAssets.Map, fit: BoxFit.cover),
                 ),
               ],
             ),

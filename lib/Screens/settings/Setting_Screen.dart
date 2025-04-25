@@ -1,4 +1,5 @@
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -20,7 +21,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       color: Colors.white,
       child: Stack(
         children: [
-          Image.asset("assets/bg.png"),
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppAssets.Background),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(

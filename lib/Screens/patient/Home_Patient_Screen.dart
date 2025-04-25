@@ -1,14 +1,14 @@
-import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/Auth/Sign%20up/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Patiant%20Tabs/home_tab.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/CustomTabBar.dart';
 import 'package:dental_app_graduation_project/Screens/patient/Patiant_Profile_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/settings/Setting_Screen.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/Favourite_Tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/Home_Tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/Massege_Tab.dart';
-import 'package:dental_app_graduation_project/Screens/tabs/Search_Tab.dart';
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Patiant%20Tabs/Favourite_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Patiant%20Tabs/Massege_Tab.dart';
+import 'package:dental_app_graduation_project/Screens/tabs/Patiant%20Tabs/Search_Tab.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePatientScreen extends StatefulWidget {
   static const String route_name = "Home Patient Screen";
@@ -19,118 +19,121 @@ class HomePatientScreen extends StatefulWidget {
 }
 
 class _HomePatientScreenState extends State<HomePatientScreen> {
-  int sellectedTabIndex = 0;
-  List<Widget> tabs = const [HomeTab(), HaertTab(), SearchTab(), MassegeTab()];
+  int selectedTabIndex = 0;
+  List<Widget> tabs = const [HomeTab(), FavouriteTab(), SearchTab(), MassegeTab()];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.tealAccent,
-      //   title: Text("Doctor",style: TextStyle(fontSize: 20,color: Colors.black),),
-      // ),
-
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25)),
+    return Container(
+      color: Colors.white,
+      child: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppAssets.Background),
+                fit: BoxFit.cover,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            drawer: Drawer(
+              child: ListView(
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage("assets/kareem.jpg"),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "Menu",
-                        style: TextStyle(color: Colors.black, fontSize: 24),
-                      ),
-                    ],
+                  const DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage(AppAssets.Kemo),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "Menu",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 24),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.home),
+                    title: const Text("Home"),
+                    onTap: () {
+                      // اضف هنا التنقل أو الإجراء المطلوب
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: const Text("Settings"),
+                    onTap: () {
+                      Navigator.pushNamed(context, SettingsScreen.route_name);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text("Profile"),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, PatiantProfileScreen.route_name);
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.logout, color: Colors.red),
+                    title: const Text("Logout",
+                        style: TextStyle(color: Colors.red)),
+                    onTap: () {
+                      
+                      Navigator.pushReplacementNamed(
+                          context, SignUpScreenPatient.route_name);
+                    },
                   ),
                 ],
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text("Home"),
-              onTap: () {
-                // اضف هنا التنقل أو الإجراء المطلوب
+            body: tabs[selectedTabIndex],
+            bottomNavigationBar: CustomTabBar(
+              selectedIndex: selectedTabIndex,
+              onTabChanged: (index) {
+                setState(() {
+                  selectedTabIndex = index;
+                });
               },
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: "Home",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite_border),
+                  label: "Favorite",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.search),
+                  label: "Search",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.chat_bubble_outline),
+                  label: "Chat",
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text("Settings"),
-              onTap: () {
-                Navigator.pushNamed(context, SettingsScreen.route_name);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text("Profile"),
-              onTap: () {
-                Navigator.pushNamed(context, ProfileSetupScreen.route_name);
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text("Logout", style: TextStyle(color: Colors.red)),
-              onTap: () async {
-
-                //! Firebase
-
-                // await FirebaseAuth.instance.signOut();
-                // // رجّع المستخدم إلى شاشة تسجيل الدخول أو الشاشة المناسبة ليك
-                // Navigator.pushReplacementNamed(context, SignUpScreen.route_name);
-
-                //! Supabase
-
-                await Supabase.instance.client.auth.signOut();
-
-                // رجّع المستخدم إلى شاشة تسجيل الدخول أو أي شاشة مناسبة
-                Navigator.pushReplacementNamed(context, SignUpScreen.route_name);
-              },
-            ),
-          ],
-        ),
-      ),
-
-      body: tabs[sellectedTabIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: sellectedTabIndex,
-        onTap: (index) {
-          sellectedTabIndex = index;
-          setState(() {});
-        },
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.black,
-        backgroundColor: AppColors.primary,
-        //selectedFontSize: 25,
-        iconSize: 25,
-        showSelectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border), label: "Favorite"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble_outline), label: "Chat"),
+          ),
         ],
       ),
     );

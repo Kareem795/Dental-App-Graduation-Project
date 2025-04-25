@@ -1,249 +1,256 @@
-import 'package:dental_app_graduation_project/Screens/auth/signup/Sign_up_Screen_Patient.dart';
+import 'package:dental_app_graduation_project/Screens/Auth/Sign%20up/Sign_up_Screen_Patient.dart';
 import 'package:dental_app_graduation_project/Screens/patient/Home_Patient_Screen.dart';
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
-import 'package:dental_app_graduation_project/utils/app_style.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_style.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/CustomTextField.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class LoginScreen extends StatefulWidget {
+import 'package:shared_preferences/shared_preferences.dart';
+
+class LoginScreenPatient extends StatefulWidget {
   static const String route_name = "Login Screen";
 
-  const LoginScreen({super.key});
+  const LoginScreenPatient({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginScreenPatientState createState() => _LoginScreenPatientState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenPatientState extends State<LoginScreenPatient> {
   bool _isPasswordVisible = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  //! Firebase login
-
-  // Future<void> _login() async {
-  //   try {
-  //     final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //       email: _emailController.text.trim(),
-  //       password: _passwordController.text.trim(),
-  //     );
-
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
-  //     );
-
-  //     Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('خطأ في تسجيل الدخول: ${e.toString()}')),
-  //     );
-  //   }
-  // }
-
-  //! Supabase login
+  Future<void> saveUserId(int userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('user_id', userId);
+  }
 
   Future<void> _login() async {
-  try {
-    final AuthResponse res = await Supabase.instance.client.auth.signInWithPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
+    final url = Uri.parse('${AppConstants.URL}/api/authen/login');
 
-    final user = res.user;
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': _emailController.text.trim(),
+          'password': _passwordController.text.trim(),
+        }),
+      );
 
-    if (user != null) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم تسجيل الدخول بنجاح!')),
+        );
+
+        saveUserId(data['user']['id']); // أو حسب الـ response اللي بيرجعلك
+
+        Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
+      } else {
+        final body = jsonDecode(response.body);
+        final errorMessage =
+            body['message'] ?? 'فشل تسجيل الدخول، تحقق من البيانات.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('خطأ: $errorMessage')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم تسجيل الدخول بنجاح!')),
+        const SnackBar(content: Text('حدث خطأ غير متوقع أثناء تسجيل الدخول')),
       );
-      Navigator.pushReplacementNamed(context, HomePatientScreen.route_name);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('فشل تسجيل الدخول، تحقق من البيانات')),
-      );
+      print('Login error: $e');
     }
-  } on AuthException catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('خطأ: ${e.message}')),
-    );
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('حدث خطأ غير متوقع أثناء تسجيل الدخول')),
-    );
-    print('Login error: $e');
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 100),
-              Text(
-                "Welcome back",
-                style: AppStyle.googleStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-                textAlign: TextAlign.center,
+    return Container(
+      color: Colors.white,
+      child: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppAssets.Background),
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 8),
-              Text(
-                "You can search a course, apply course and find\nscholarship for abroad studies",
-                textAlign: TextAlign.center,
-                style: AppStyle.googleStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        'assets/google.png',
-                        width: 40,
-                        height: 40,
-                      ),
-                      label: const Text("Google"),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: const BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        'assets/facebook.png',
-                        width: 40,
-                        height: 40,
-                      ),
-                      label: const Text("Facebook"),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: const BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              _buildTextFormField(
-                label: "Email",
-                controller: _emailController,
-              ),
-              const SizedBox(height: 30),
-              _buildTextFormField(
-                label: "Password",
-                isPassword: true,
-                controller: _passwordController,
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: Text(
-                  "Login",
-                  style: AppStyle.googleStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              TextButton(
-                onPressed: () {
-                  ForgetPasswordDialog.showForgetPasswordDialog(context);
-                },
-                child: Text(
-                  "Forgot password",
-                  style: AppStyle.googleStyle(
-                    fontSize: 14,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, SignUpScreen.route_name);
-                },
-                child: Text(
-                  "Don't have an account? Join us",
-                  style: AppStyle.googleStyle(
-                    fontSize: 14,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextFormField({
-    required String label,
-    bool isPassword = false,
-    required TextEditingController controller,
-  }) {
-    return TextFormField(
-      controller: controller,
-      obscureText: isPassword ? !_isPasswordVisible : false,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        suffixIcon: isPassword
-            ? IconButton(
-                icon: Icon(
-                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 100),
+                    Text(
+                      "Welcome back",
+                      style: AppStyle.googleStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "You can search a course, apply course and find\nscholarship for abroad studies",
+                      textAlign: TextAlign.center,
+                      style: AppStyle.googleStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: Image.asset(
+                              AppAssets.Google,
+                              width: 40,
+                              height: 40,
+                            ),
+                            label: const Text("Google"),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.black,
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: const BorderSide(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: Image.asset(
+                              AppAssets.Facebook,
+                              width: 40,
+                              height: 40,
+                            ),
+                            label: const Text("Facebook"),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.black,
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: const BorderSide(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    CustomTextField(
+                      label: "Email",
+                      controller: _emailController,
+                    ),
+                    const SizedBox(height: 30),
+                    CustomTextField(
+                      label: "Password",
+                      controller: _passwordController,
+                      obscureText: !_isPasswordVisible,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: _login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
+                      child: Text(
+                        "Login",
+                        style: AppStyle.googleStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextButton(
+                      onPressed: () {
+                        ForgetPasswordDialog.showForgetPasswordDialog(
+                            context, _emailController);
+                      },
+                      child: Text(
+                        "Forgot password",
+                        style: AppStyle.googleStyle(
+                          fontSize: 14,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, SignUpScreenPatient.route_name);
+                      },
+                      child: Text(
+                        "Don't have an account? Join us",
+                        style: AppStyle.googleStyle(
+                          fontSize: 14,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, HomePatientScreen.route_name);
+                        },
+                        child: Text(
+                          "Kemo Enter",
+                          style: AppStyle.googleStyle(
+                            fontSize: 24,
+                            color: AppColors.primary,
+                          ),
+                        ))
+                  ],
                 ),
-                onPressed: () {
-                  setState(() {
-                    _isPasswordVisible = !_isPasswordVisible;
-                  });
-                },
-              )
-            : null,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class ForgetPasswordDialog {
-  static void showForgetPasswordDialog(BuildContext context) {
+  static void showForgetPasswordDialog(
+      BuildContext context, TextEditingController controller) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -269,13 +276,9 @@ class ForgetPasswordDialog {
                 "Enter your email for verification. We will send a 4-digit code to your email.",
               ),
               const SizedBox(height: 15),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
+              CustomTextField(
+                label: "Email",
+                controller: controller, //! لسه controller مش متحدد
               ),
               const SizedBox(height: 25),
               ElevatedButton(

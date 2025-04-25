@@ -1,6 +1,9 @@
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart'; // استيراد SharedPreferences
 
 class AddAvailableAppointmentsScreen extends StatefulWidget {
   const AddAvailableAppointmentsScreen({super.key});
@@ -8,10 +11,12 @@ class AddAvailableAppointmentsScreen extends StatefulWidget {
   static const String route_name = "Add_Available_Appointments_Screen";
 
   @override
-  State<AddAvailableAppointmentsScreen> createState() => _AddAvailableAppointmentsScreenState();
+  State<AddAvailableAppointmentsScreen> createState() =>
+      _AddAvailableAppointmentsScreenState();
 }
 
-class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointmentsScreen> {
+class _AddAvailableAppointmentsScreenState
+    extends State<AddAvailableAppointmentsScreen> {
   String? selectedDayOfWeek;
   int? selectedDayNumber;
   String? selectedMonth;
@@ -50,10 +55,17 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
     return List.generate(daysCount, (index) => index + 1);
   }
 
+  Future<int?> _getDoctorId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('doctor_id'); // استرجاع doctor_id من SharedPreferences
+  }
+
   void _pickTime() async {
     TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      switchToInputEntryModeIcon: const Icon(Icons.arrow_upward),
+      switchToTimerEntryModeIcon: const Icon(Icons.arrow_downward),
     );
     if (picked != null) {
       setState(() {
@@ -62,76 +74,70 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
     }
   }
 
-  // void _addAppointment() {
-  //   if (selectedDayOfWeek != null &&
-  //       selectedMonth != null &&
-  //       selectedDayNumber != null &&
-  //       selectedTime != null) {
-  //     setState(() {
-  //       availableAppointments.add({
-  //         'day': selectedDayOfWeek!,
-  //         'month': selectedMonth!,
-  //         'date': selectedDayNumber.toString(),
-  //         'time': selectedTime!.format(context),
-  //       });
-  //       selectedDayOfWeek = null;
-  //       selectedMonth = null;
-  //       selectedDayNumber = null;
-  //       selectedTime = null;
-  //     });
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //           content: Text('Please select day, month, date, and time')),
-  //     );
-  //   }
-  // }
-
-
   void _addAppointment() async {
-  if (selectedDayOfWeek == null ||
-      selectedMonth == null ||
-      selectedDayNumber == null ||
-      selectedTime == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('الرجاء اختيار اليوم، الشهر، التاريخ والوقت')),
-    );
-    return;
-  }
+    if (selectedDayOfWeek == null ||
+        selectedMonth == null ||
+        selectedDayNumber == null ||
+        selectedTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('الرجاء اختيار اليوم، الشهر، التاريخ والوقت')),
+      );
+      return;
+    }
 
-  try {
-    // تحويل الوقت إلى تنسيق 12 ساعة مع AM/PM
-    final timeString = selectedTime!.format(context);
-    
-    final response = await Supabase.instance.client
-        .from("Doctor's appointments")
-        .insert({
-          'Month': selectedMonth,
-          'Day': selectedDayNumber,
-          'Time': timeString, // سيتم حفظه مثل "8:15 PM"
+    try {
+      final timeString = selectedTime!.hour.toString().padLeft(2, '0') +':' +
+          selectedTime!.minute.toString().padLeft(2, '0');
+
+      final doctorId = await _getDoctorId(); // استرجاع doctor_id
+      if (doctorId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('فشل في استرجاع معرف الطبيب')),
+        );
+        return;
+      }
+
+      final url = Uri.parse(
+          '${AppConstants.URL}/api/appointments');
+
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "doctor_id": doctorId, // استخدام doctor_id المسترجع من SharedPreferences
+          "day_of_week": selectedDayOfWeek!.toLowerCase(),
+          "month": monthDays.keys.toList().indexOf(selectedMonth!) + 1,
+          "day_of_month": selectedDayNumber!,
+          "time": timeString
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setState(() {
+          availableAppointments.add({
+            'day': selectedDayOfWeek!,
+            'month': selectedMonth!,
+            'date': selectedDayNumber.toString(),
+            'time': selectedTime!.format(context),
+          });
+
+          selectedDayOfWeek = null;
+          selectedMonth = null;
+          selectedDayNumber = null;
+          selectedTime = null;
         });
-
-    setState(() {
-      availableAppointments.add({
-        'day': selectedDayOfWeek!,
-        'month': selectedMonth!,
-        'date': selectedDayNumber.toString(),
-        'time': timeString,
-      });
-      // مسح الخيارات
-      selectedDayOfWeek = null;
-      selectedMonth = null;
-      selectedDayNumber = null;
-      selectedTime = null;
-    });
-
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('فشل إضافة الموعد: ${e.toString()}')),
-    );
-    print("Error: $e");
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('فشل في إضافة الموعد: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('حدث خطأ: ${e.toString()}')),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -152,18 +158,13 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
-
-          
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            // title: const Text("Select Time"),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context), 
+              onPressed: () => Navigator.pop(context),
             ),
           ),
-
-
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -174,8 +175,10 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
                     const SizedBox(height: 20),
                     const Text(
                       "Add Doctor Schedule",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold ,),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -251,7 +254,10 @@ class _AddAvailableAppointmentsScreenState extends State<AddAvailableAppointment
                                       ? Colors.grey[600]
                                       : Colors.black),
                             ),
-                            const Icon(Icons.access_time , color: AppColors.primary,),
+                            const Icon(
+                              Icons.access_time,
+                              color: AppColors.primary,
+                            ),
                           ],
                         ),
                       ),

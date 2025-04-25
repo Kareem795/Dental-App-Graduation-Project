@@ -1,10 +1,21 @@
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SelectTimeScreen extends StatefulWidget {
   static const String route_name = "Select Time Screen";
 
-  const SelectTimeScreen({super.key});
+  final String doctorName;
+  final String clinicName;
+  final String imageUrl;
+
+  const SelectTimeScreen({
+    super.key,
+    required this.doctorName,
+    required this.clinicName,
+    required this.imageUrl,
+  });
+
   @override
   _SelectTimeScreenState createState() => _SelectTimeScreenState();
 }
@@ -12,6 +23,7 @@ class SelectTimeScreen extends StatefulWidget {
 class _SelectTimeScreenState extends State<SelectTimeScreen> {
   int selectedDateIndex = 1;
   bool isFavorite = false;
+
   List<Map<String, dynamic>> dates = [
     {"date": "Today, 23 Feb", "slots": 0},
     {"date": "Tomorrow, 24 Feb", "slots": 9},
@@ -26,18 +38,8 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
         children: [
           Container(
             decoration: const BoxDecoration(
-              color: Colors.transparent,
               image: DecorationImage(
-                image: AssetImage("assets/Ellipse 143.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              image: DecorationImage(
-                image: AssetImage("assets/Ellipse 142.png"),
+                image: AssetImage(AppAssets.Background),
                 fit: BoxFit.cover,
               ),
             ),
@@ -68,26 +70,28 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              "assets/Popular_image_home.png",
+                            child: Image.network(
+                              widget.imageUrl,
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(Icons.person, size: 100),
                             ),
                           ),
                           const SizedBox(width: 16),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Dr. Shruti Kedia",
-                                  style: TextStyle(
+                                  widget.doctorName,
+                                  style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(height: 4),
-                                Text("Upasana Dental Clinic, Salt Lake"),
+                                const SizedBox(height: 4),
+                                Text(widget.clinicName),
                               ],
                             ),
                           ),
@@ -112,24 +116,26 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(dates.length, (index) {
-                        return ChoiceChip(
-                          label: Text(
-                            dates[index]["date"],
-                            style: TextStyle(
-                              color: selectedDateIndex == index
-                                  ? Colors.white
-                                  : Colors.black,
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: ChoiceChip(
+                            label: Text(
+                              dates[index]["date"],
+                              style: TextStyle(
+                                color: selectedDateIndex == index
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
+                            selected: selectedDateIndex == index,
+                            selectedColor: AppColors.primary,
+                            onSelected: (selected) {
+                              setState(() {
+                                selectedDateIndex = index;
+                              });
+                            },
                           ),
-                          selected: selectedDateIndex == index,
-                          selectedColor: AppColors.primary,
-                          onSelected: (selected) {
-                            setState(() {
-                              selectedDateIndex = index;
-                            });
-                          },
                         );
                       }),
                     ),
@@ -163,9 +169,7 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Center(
-                    child: Text("OR"),
-                  ),
+                  const Center(child: Text("OR")),
                   const SizedBox(height: 8),
                   Center(
                     child: OutlinedButton(
@@ -173,13 +177,13 @@ class _SelectTimeScreenState extends State<SelectTimeScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        side:
-                            const BorderSide(color: AppColors.primary),
+                        side: const BorderSide(color: AppColors.primary),
                       ),
                       onPressed: () {},
-                      child: const Text("Contact Clinic",
-                          style: TextStyle(
-                              color: AppColors.primary)),
+                      child: const Text(
+                        "Contact Clinic",
+                        style: TextStyle(color: AppColors.primary),
+                      ),
                     ),
                   ),
                 ],

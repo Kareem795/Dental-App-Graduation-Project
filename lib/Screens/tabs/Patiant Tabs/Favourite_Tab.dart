@@ -1,10 +1,11 @@
 import 'package:dental_app_graduation_project/Screens/patient/Show_Doctor_details_Screen.dart';
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class HaertTab extends StatelessWidget {
+class FavouriteTab extends StatelessWidget {
   static const String route_name = "Haert Tab";
-  const HaertTab({super.key});
+  const FavouriteTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,25 +13,25 @@ class HaertTab extends StatelessWidget {
       {
         "name": "Dr. Shouey",
         "specialty": "Specialist Cardiology",
-        "image": "assets/Feature4_image_home.png",
+        "image": AppAssets.Feature4_image,
         "isFavorite": false
       },
       {
         "name": "Dr. Christenfeld N",
         "specialty": "Specialist Cancer",
-        "image": "assets/Feature3_image_home.png",
+        "image": AppAssets.Feature3_image,
         "isFavorite": true
       },
       {
         "name": "Dr. Shouey",
         "specialty": "Specialist Medicine",
-        "image": "assets/Feature1_image_home.png",
+        "image": AppAssets.Feature1_image,
         "isFavorite": true
       },
       {
         "name": "Dr. Shouey",
         "specialty": "Specialist Dentist",
-        "image": "assets/Popular_image_home.png",
+        "image": AppAssets.Popular_image,
         "isFavorite": false
       },
     ];
@@ -38,7 +39,14 @@ class HaertTab extends StatelessWidget {
       color: Colors.white,
       child: Stack(
         children: [
-          Image.asset("assets/bg.png"),
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppAssets.Background),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -109,21 +117,21 @@ class HaertTab extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       children: [
                         FeatureDoctorCard("Dr. Crick", "3.7",
-                            "assets/Community_image_home.png"),
+                            AppAssets.Community_image),
                         FeatureDoctorCard("Dr. Strain", "3.0",
-                            "assets/Popular_image_home.png"),
+                            AppAssets.Popular_image),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
-                            "assets/Feature1_image_home.png"),
+                            AppAssets.Feature1_image),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
-                            "assets/Feature2_image_home.png"),
+                            AppAssets.Feature2_image),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
-                            "assets/Feature4_image_home.png"),
+                            AppAssets.Feature4_image),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
-                            "assets/Community_image_home.png"),
+                            AppAssets.Community_image),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
-                            "assets/Popular_image_home.png"),
+                            AppAssets.Popular_image),
                         FeatureDoctorCard("Dr. Lachinet", "2.9",
-                            "assets/Feature1_image_home.png"),
+                            AppAssets.Feature1_image),
                       ],
                     ),
                   ),
@@ -224,6 +232,7 @@ Widget FeatureDoctorCard(String name, String rating, String image) {
       ],
     ),
     child: Column(
+      mainAxisSize: MainAxisSize.min, // ⬅️ مهم جدًا
       children: [
         const Align(
           alignment: Alignment.topRight,
@@ -234,9 +243,25 @@ Widget FeatureDoctorCard(String name, String rating, String image) {
           radius: 25,
         ),
         const SizedBox(height: 5),
-        Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        Text("$rating ⭐"),
+        Flexible( // ⬅️ هنا عشان الاسم الطويل ما يعملش overflow
+          child: Text(
+            name,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+          ),
+        ),
+        Flexible(
+          child: Text(
+            "$rating ⭐",
+            style: const TextStyle(fontSize: 12),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     ),
   );
 }
+

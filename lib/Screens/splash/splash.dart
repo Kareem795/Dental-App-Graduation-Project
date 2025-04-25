@@ -1,4 +1,5 @@
-import 'package:dental_app_graduation_project/Screens/onboarding/Onboarding_Screen1.dart';
+import 'package:dental_app_graduation_project/Screens/Onboarding/OnboardingScreen.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
@@ -15,7 +16,7 @@ class _SplashState extends State<Splash> {
     // TODO: implement initState
 
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, OnboardingScreen1.route_name);
+      Navigator.pushReplacementNamed(context, OnboardingScreen.route_name);
     });
   }
 
@@ -25,8 +26,15 @@ class _SplashState extends State<Splash> {
       color: Colors.white,
       child: Stack(
           children: [  
-            Image.asset("assets/bg.png"),
-            Center(child: Image.asset("assets/Logo.png")),
+            Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppAssets.Background),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+            Center(child: Image.asset(AppAssets.Logo)),
       ]),
     );
   }

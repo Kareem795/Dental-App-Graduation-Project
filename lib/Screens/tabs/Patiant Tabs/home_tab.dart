@@ -1,11 +1,36 @@
-import 'package:dental_app_graduation_project/utils/app_colors.dart';
-import 'package:dental_app_graduation_project/utils/app_style.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
+import 'package:dental_app_graduation_project/Utils/Constants/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeTab extends StatelessWidget {
-  static const String route_name = "bhjdfbjv";
+  static const String route_name = "Home_Tab";
   const HomeTab({super.key});
+
+  Future<List<Map<String, dynamic>>> fetchDoctors() async {
+    final url = Uri.parse('${AppConstants.URL}/api/doctors/');
+
+    try {
+      final response = await http.get(url);
+      print("Status Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body);
+        final List data = decoded['data'];
+        return data.cast<Map<String, dynamic>>();
+      } else {
+        throw Exception("Failed to load doctors");
+      }
+    } catch (e) {
+      print("Fetch error: $e");
+      throw Exception("Error fetching doctors");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +47,9 @@ class HomeTab extends StatelessWidget {
           buildCommunitySection(),
           buildPopularDoctors(),
           buildFeatureDoctors(),
+          const SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );
@@ -49,11 +77,6 @@ class HomeTab extends StatelessWidget {
                   fontSize: 18,
                   color: Colors.white,
                 ),
-
-                // GoogleFonts.poppins(
-                //   fontSize: 18,
-                //   color: Colors.white,
-                // ),
               ),
               const SizedBox(height: 5),
               Text(
@@ -79,15 +102,15 @@ class HomeTab extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 2),
-                  boxShadow: [
+                  boxShadow:  [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      // color: Colors.black.withOpacity(0.2),//!======================================
                       blurRadius: 6,
                       offset: const Offset(0, 3),
                     )
                   ],
                   image: const DecorationImage(
-                    image: AssetImage('assets/kareem.jpg'),
+                    image: AssetImage(AppAssets.Kemo),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -136,10 +159,10 @@ class HomeTab extends StatelessWidget {
                   height: 90,
                   margin: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.pink,
                     borderRadius: BorderRadius.circular(10),
                     image: const DecorationImage(
-                      image: AssetImage('assets/Community_image_home.png'),
+                      image: AssetImage(AppAssets.Community_image),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -155,97 +178,169 @@ class HomeTab extends StatelessWidget {
 
   // ✅ قسم الأطباء المشهورين
   Widget buildPopularDoctors() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: fetchDoctors(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+              child: CircularProgressIndicator(
+            color: AppColors.primary,
+          ));
+        } else if (snapshot.hasError) {
+          return const Center(
+              child: Column(
             children: [
-              Text(
-                "Popular Doctor",
-                style: AppStyle.googleStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold),
+              SizedBox(
+                height: 10,
               ),
-              TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "See all >",
-                    style: TextStyle(color: AppColors.primary),
-                  )),
+              Text(
+                "Error loading doctors\n",
+                style: TextStyle(color: AppColors.primary, fontSize: 25),
+              ),
+            ],
+          ));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(
+              child: Text(
+            "No doctors found\n",
+            style: TextStyle(color: AppColors.primary, fontSize: 25),
+          ));
+        }
+
+        final doctors = snapshot.data!;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Popular Doctor",
+                    style: AppStyle.googleStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      "See all >",
+                      style: TextStyle(color: AppColors.primary),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 225,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: doctors.map((doctor) {
+                    return buildDoctorCard(
+                      doctor['name'] ?? 'Unknown',
+                      'Dentist Specialist', // تقدر تجيب التخصص لو موجود في الـ API
+                      AppAssets
+                          .Popular_image, // أو doctor['photo'] لو الصورة من API
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                buildDoctorCard("Dr. Fillerup Grab", "Dentist Specialist",
-                    'assets/Community_image_home.png'),
-                buildDoctorCard("Dr. Blessing", "Dentist Specialist",
-                    'assets/Popular_image_home.png'),
-                buildDoctorCard("Dr. Blessing", "Dentist Specialist",
-                    'assets/Community_image_home.png'),
-                buildDoctorCard("Dr. Blessing", "Dentist Specialist",
-                    'assets/Popular_image_home.png'),
-                buildDoctorCard("Dr. Blessing", "Dentist Specialist",
-                    'assets/Popular_image_home.png'),
-              ],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   // ✅ قسم الأطباء المميزين
   Widget buildFeatureDoctors() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: fetchDoctors(), // نفس دالة الفيتش اللي استخدمناها قبل كده
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+              child: CircularProgressIndicator(
+            color: AppColors.primary,
+          ));
+        } else if (snapshot.hasError) {
+          return const Center(
+              child: Column(
             children: [
-              Text(
-                "Feature Doctor",
-                style: AppStyle.googleStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold),
+              SizedBox(
+                height: 10,
               ),
-              TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "See all >",
-                    style: TextStyle(color: AppColors.primary),
-                  )),
+              Text(
+                "Error loading doctors",
+                style: TextStyle(color: AppColors.primary, fontSize: 25),
+              ),
             ],
-          ),
-          const SizedBox(height: 10),
-          Row(
+          ));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text("No doctors found"));
+        }
+
+        final doctors = snapshot.data!;
+        final topDoctors = doctors.take(3).toList(); // أول 3 دكاترة بس
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildSmallDoctorCard(
-                  "Dr. Crick", 'assets/Feature1_image_home.png', "⭐ 3.7"),
-              buildSmallDoctorCard(
-                  "Dr. Strain", 'assets/Feature2_image_home.png', "⭐ 3.6"),
-              buildSmallDoctorCard(
-                  "Dr. Lachinet", 'assets/Feature3_image_home.png', "⭐ 2.9"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Feature Doctor",
+                    style: AppStyle.googleStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      "See all >",
+                      style: TextStyle(color: AppColors.primary),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  buildSmallDoctorCard(
+                    topDoctors[0]['name'] ?? 'Doctor 1',
+                    AppAssets.Feature1_image,
+                    "⭐ 3.7",
+                  ),
+                  buildSmallDoctorCard(
+                    topDoctors[1]['name'] ?? 'Doctor 2',
+                    AppAssets.Feature2_image,
+                    "⭐ 3.6",
+                  ),
+                  buildSmallDoctorCard(
+                    topDoctors[2]['name'] ?? 'Doctor 3',
+                    AppAssets.Feature3_image,
+                    "⭐ 2.9",
+                  ),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget buildDoctorCard(String name, String specialty, String image) {
     return Container(
-      width: 150,
+      width: 175,
       margin: const EdgeInsets.only(right: 15),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.pink,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -284,7 +379,7 @@ class HomeTab extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 5),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.deepOrangeAccent,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
