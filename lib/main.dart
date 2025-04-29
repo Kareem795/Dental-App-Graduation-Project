@@ -18,9 +18,12 @@ class DentalApp extends StatelessWidget {
       title: 'Dental Graduation',
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      initialRoute: Splash.route_name,
+
+       initialRoute: Splash.route_name,
       // initialRoute: ScreenTest.route_name,
+      
       onGenerateRoute: AppRouter.onGenerateRoute,
+
       // يمكنك دعم اللغات هنا:
       // supportedLocales: const [Locale('en'), Locale('ar')],
       // localizationsDelegates: [...],

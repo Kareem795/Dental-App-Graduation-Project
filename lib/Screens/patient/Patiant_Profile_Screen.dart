@@ -49,9 +49,6 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
         ),
       );
 
-      print('STATUS CODE: ${response.statusCode}');
-      print('RESPONSE: ${response.data}');
-
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile updated successfully!')),
@@ -72,8 +69,6 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
       );
     }
   }
-
-  //! Profile Screen 1
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +98,6 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
             ),
             body: SingleChildScrollView(
               child: Column(
-                //! All in this Column
                 children: [
                   Container(
                     padding: const EdgeInsets.only(bottom: 30),
@@ -118,15 +112,13 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
                     child: const Column(
                       children: [
                         CircleAvatar(
-                          radius: 70, //! Control size Image
-                          backgroundImage:
-                              AssetImage(AppAssets.Kemo), // Profile Image
+                          radius: 70,
+                          backgroundImage: AssetImage(AppAssets.Kemo),
                           child: Align(
-                            alignment: Alignment
-                                .bottomRight, //! Control position camera icon
+                            alignment: Alignment.bottomRight,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
-                              radius: 20, //! Control size camera icon
+                              radius: 20,
                               child: Icon(
                                 Icons.camera_alt,
                                 size: 25,
@@ -158,11 +150,8 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
                       children: [
                         buildTextField('Name', name,
                             (value) => setState(() => name = value), context),
-                        buildTextField(
-                            'Contact Number',
-                            phone,
-                            (value) => setState(() => phone = value),
-                            context),
+                        buildTextField('Contact Number', phone,
+                            (value) => setState(() => phone = value), context),
                         buildTextField('Date of Birth', dob,
                             (value) => setState(() => dob = value), context),
                         buildTextField(
@@ -172,9 +161,7 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
                             context),
                         const SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {
-                            updateProfile();
-                          },
+                          onPressed: updateProfile,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             minimumSize: const Size(double.infinity, 50),
@@ -182,8 +169,8 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
                                 borderRadius: BorderRadius.circular(10)),
                           ),
                           child: const Text('Continue',
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.white)),
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white)),
                         ),
                       ],
                     ),
@@ -197,59 +184,94 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
     );
   }
 
-  Widget buildTextField(String label, String value, Function(String) onUpdate, BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label.toUpperCase(),
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: AppColors.primary,
+  Widget buildTextField(String label, String value, Function(String) onUpdate,
+      BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label.toUpperCase(),
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primary,
+          ),
         ),
-      ),
-      const SizedBox(height: 4),
-      Row(
-        children: [
-          Expanded(
-            child: Text(
-              value.isNotEmpty ? value : ' ',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                value.isNotEmpty ? value : ' ',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-          TextButton.icon(
-            onPressed: () {
-              _navigateAndUpdateField(context, label, value, onUpdate);
-            },
-            icon: const Icon(Icons.edit, size: 16, color: AppColors.primary),
-            label: const Text(
-              'EDIT',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+            TextButton.icon(
+              onPressed: () {
+                if (label == 'Date of Birth') {
+                  _pickDate(context, onUpdate);
+                } else {
+                  _navigateAndUpdateField(context, label, value, onUpdate);
+                }
+              },
+              icon: const Icon(Icons.edit, size: 16, color: AppColors.primary),
+              label: const Text(
+                'EDIT',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(50, 30),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
             ),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(50, 30),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ],
+        ),
+        const SizedBox(height: 30),
+      ],
+    );
+  }
+
+  Future<void> _pickDate(BuildContext context, Function(String) onUpdate) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000), // التاريخ المبدئي
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      initialDatePickerMode: DatePickerMode.year, // 🔥 يخلي اختيار السنة أولا
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
             ),
           ),
-        ],
-      ),
+          child: child!,
+        );
+      },
+    );
 
-      const SizedBox(height: 30,)
+    if (pickedDate != null) {
+      String formattedDate =
+          "${pickedDate.year}-${_twoDigits(pickedDate.month)}-${_twoDigits(pickedDate.day)}";
+      onUpdate(formattedDate);
+    }
+  }
 
-    ],
-  );
-}
-
+// Helper function to ensure two digits (e.g., 01, 02)
+  String _twoDigits(int n) {
+    return n.toString().padLeft(2, '0');
+  }
 
   void _navigateAndUpdateField(BuildContext context, String fieldName,
       String initialValue, Function(String) onUpdate) {
@@ -266,7 +288,7 @@ class _PatiantProfileScreenState extends State<PatiantProfileScreen> {
   }
 }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//--------------------- EditFieldScreen تبعك زي ما هو بالظبط -------------------------
 
 class EditFieldScreen extends StatefulWidget {
   final String fieldName;
@@ -305,7 +327,6 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
     super.dispose();
   }
 
-  //! Profile Screen 2
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -345,8 +366,8 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
                   const SizedBox(height: 10),
                   TextField(
                     controller: _controller,
-                    focusNode: _focusNode, // 🔥 Ensures the keyboard opens
-                    autofocus: true, // Ensures it gains focus
+                    focusNode: _focusNode,
+                    autofocus: true,
                     style: const TextStyle(color: Colors.black),
                     cursorColor: AppColors.primary,
                     decoration: const InputDecoration(

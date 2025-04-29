@@ -1,3 +1,4 @@
+import 'package:dental_app_graduation_project/Screens/Patient/Home_Patient_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/patient/Show_Doctor_details_Screen.dart';
 import 'package:dental_app_graduation_project/Screens/patient/Select_Doctor_Available_Time_Screen.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
@@ -71,8 +72,14 @@ class _SearchTabState extends State<SearchTab> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: const Text("My Doctors"),
+              title: const Text("Favourite"),
               backgroundColor: Colors.transparent,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.popAndPushNamed(context , HomePatientScreen.route_name); // ✅ يرجع للشاشة اللي قبلها
+                },
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -292,6 +299,8 @@ class _SearchTabState extends State<SearchTab> {
                             clinicName: doctor["Clinic_name"] ?? "Clinic",
                             imageUrl:
                                 "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
+                            doctorId:
+                                doctor["id"], // ✅ أضفنا هنا تمرير id الدكتور
                           ),
                         ),
                       );

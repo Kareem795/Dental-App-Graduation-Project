@@ -57,7 +57,7 @@ class AppRouter {
             doctorName: "Dr. Unknown",
             clinicName: "Dental Clinic",
             imageUrl: "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
-            
+            doctorId: 1,
           ),
         );
       case SettingsScreen.route_name:
@@ -73,7 +73,7 @@ class AppRouter {
       case XrayUploadScreen.route_name:
         return MaterialPageRoute(builder: (_) => XrayUploadScreen());
       // case ScreenTest.route_name:
-      //   return MaterialPageRoute(builder: (_) => ScreenTest());
+      //   return MaterialPageRoute(builder: (_) => const ScreenTest());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -1,7 +1,10 @@
+import 'package:dental_app_graduation_project/Screens/Patient/Home_Patient_Screen.dart';
+import 'package:dental_app_graduation_project/Screens/Screen_Test.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_style.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/CustomImageSlider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -41,10 +44,12 @@ class HomeTab extends StatelessWidget {
           Stack(
             children: [buildHeader(context), buildSearchBar()],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          buildCommunitySection(),
+          const SizedBox(height: 20,),
+          // في مكان الاستدعاء
+          const CustomImageSlider (height: 230, borderRadius: 25,),
+
+          const SizedBox(height: 20,),
+          // buildCommunitySection(),
           buildPopularDoctors(),
           buildFeatureDoctors(),
           const SizedBox(
@@ -102,11 +107,10 @@ class HomeTab extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 2),
-                  boxShadow:  [
+                  boxShadow: const [
                     BoxShadow(
-                      // color: Colors.black.withOpacity(0.2),//!======================================
                       blurRadius: 6,
-                      offset: const Offset(0, 3),
+                      offset: Offset(0, 3),
                     )
                   ],
                   image: const DecorationImage(
@@ -159,7 +163,6 @@ class HomeTab extends StatelessWidget {
                   height: 90,
                   margin: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
-                    color: Colors.pink,
                     borderRadius: BorderRadius.circular(10),
                     image: const DecorationImage(
                       image: AssetImage(AppAssets.Community_image),
@@ -340,7 +343,6 @@ class HomeTab extends StatelessWidget {
       margin: const EdgeInsets.only(right: 15),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.pink,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -379,7 +381,6 @@ class HomeTab extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 5),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.deepOrangeAccent,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
