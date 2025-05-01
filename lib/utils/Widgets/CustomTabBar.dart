@@ -19,13 +19,13 @@ class CustomTabBar extends StatelessWidget {
       currentIndex: selectedIndex,
       onTap: onTabChanged,
 
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.black,
-      backgroundColor: AppColors.primary,
+      // selectedItemColor: Colors.white,
+      // unselectedItemColor: Colors.black,
+      // backgroundColor: AppColors.primary,
       iconSize: 25,
       
-      showSelectedLabels: true,
-      type: BottomNavigationBarType.fixed,
+      // showSelectedLabels: true,
+      // type: BottomNavigationBarType.fixed,
       items: items,
     );
   }

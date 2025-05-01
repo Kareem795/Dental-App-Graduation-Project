@@ -1,9 +1,11 @@
 import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/Background/BackgroundWrapper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class DoctorProfileScreen extends StatefulWidget {
   static const String route_name = "Doctor Profile Screen";
@@ -109,106 +111,94 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   //! Profile Screen UI
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppAssets.Background),
-                fit: BoxFit.cover,
-              ),
-            ),
+    return BackgroundWrapper(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: AppColors.primary,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              backgroundColor: AppColors.primary,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(bottom: 30),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                child: const Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 70,
+                      backgroundImage:
+                      AssetImage(AppAssets.Kemo),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20,
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 25,
+                            color: AppColors.primary,
+                          ),
+                        ),
                       ),
                     ),
-                    child: const Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 70,
-                          backgroundImage:
-                              AssetImage(AppAssets.Kemo),
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 20,
-                              child: Icon(
-                                Icons.camera_alt,
-                                size: 25,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Set up your profile',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Update your profile to connect your doctor with better impression.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white70, fontSize: 15),
-                        ),
-                      ],
+                    SizedBox(height: 10),
+                    Text(
+                      'Set up your profile',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        buildTextField('Name', name, (value) => setState(() => name = value), context),
-                        buildTextField('Contact Number', phone, (value) => setState(() => phone = value), context),
-                        buildTextField('Date of Birth', dob, (value) => setState(() => dob = value), context),
-                        buildTextField('Location', location, (value) => setState(() => location = value), context),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: updateProfile,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          ),
-                          child: const Text('Continue', style: TextStyle(fontSize: 16, color: Colors.white)),
-                        ),
-                      ],
+                    SizedBox(height: 5),
+                    Text(
+                      'Update your profile to connect your doctor with better impression.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white70, fontSize: 15),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    buildTextField('Name', name, (value) => setState(() => name = value), context),
+                    buildTextField('Contact Number', phone, (value) => setState(() => phone = value), context),
+                    buildTextField('Date of Birth', dob, (value) => setState(() => dob = value), context),
+                    buildTextField('Location', location, (value) => setState(() => location = value), context),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: updateProfile,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      ),
+                      child: const Text('Continue', style: TextStyle(fontSize: 16, color: Colors.white)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
+
     );
   }
 
@@ -316,80 +306,67 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppAssets.Background),
-                fit: BoxFit.cover,
-              ),
-            ),
+    return BackgroundWrapper(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
           ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () => Navigator.pop(context),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "What is your ${widget.fieldName.toLowerCase()}?",
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
               ),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "What is your ${widget.fieldName.toLowerCase()}?",
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                autofocus: true,
+                style: const TextStyle(color: Colors.black),
+                cursorColor: AppColors.primary,
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
                   ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    autofocus: true,
-                    style: const TextStyle(color: Colors.black),
-                    cursorColor: AppColors.primary,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
                   ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.onSaved(_controller.text);
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      minimumSize: const Size(double.infinity, 50),
-                    ),
-                    child: const Text("Save",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        )),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
                   ),
-                ],
+                ),
               ),
-            ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  widget.onSaved(_controller.text);
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: const Text("Save",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    )),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

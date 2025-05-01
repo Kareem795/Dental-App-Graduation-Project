@@ -2,6 +2,7 @@ import 'package:dental_app_graduation_project/Screens/Patient/Home_Patient_Scree
 import 'package:dental_app_graduation_project/Screens/patient/Show_Doctor_details_Screen.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/Background/BackgroundWrapper.dart';
 import 'package:flutter/material.dart';
 
 class FavouriteTab extends StatelessWidget {
@@ -42,122 +43,55 @@ class FavouriteTab extends StatelessWidget {
         "isFavorite": false
       },
     ];
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppAssets.Background),
-                fit: BoxFit.cover,
-              ),
-            ),
+    return BackgroundWrapper(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text("Favourite"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.popAndPushNamed(context, HomePatientScreen.route_name);
+            },
           ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              title: const Text("Favourite"),
-              backgroundColor: Colors.transparent,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.popAndPushNamed(context , HomePatientScreen.route_name); // ✅ يرجع للشاشة اللي قبلها
-                },
-              ),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  // Search Bar,
-                  // TextField(
-                  //   decoration: InputDecoration(
-                  //     hintText: "Search",
-                  //     prefixIcon: const Icon(Icons.search),
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(10.0),
-                  //     ),
-                  //   ),
-                  // ),
-
-                  // const SizedBox(height: 20),
-
-                  // Grid of Favourite Doctors
-                  Expanded(
-                    child: GridView.builder(
-                      // padding: const EdgeInsets.all(16), // 🔵 مسافة حوالين الشبكة كلها
-                      itemCount: favouriteDoctors.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, // 🔵 عنصرين في الصف
-                        crossAxisSpacing: 8, // 🔵 مسافة أفقية أكبر
-                        mainAxisSpacing: 8, // 🔵 مسافة رأسية أكبر
-                        childAspectRatio: 0.8, // 🔵 تخلي الكارت أطول من عرضه
-                      ),
-                      itemBuilder: (context, index) {
-                        var doctor = favouriteDoctors[index];
-                        return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, DoctorDetailsScreen.route_name);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(
-                                  4.0), // ✅ شوية مسافة داخل الكارت
-                              child: DoctorCard(
-                                name: doctor["name"],
-                                specialty: doctor["specialty"],
-                                image: doctor["image"],
-                                isFavorite: doctor["isFavorite"],
-                              ),
-                            ));
-                      },
-                    ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: GridView.builder(
+                  itemCount: favouriteDoctors.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 0.8,
                   ),
-
-                  // Feature Doctors Section
-                  const SizedBox(height: 10),
-
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     const Text("Feature Doctor",
-                  //         style: TextStyle(
-                  //             fontSize: 18, fontWeight: FontWeight.bold)),
-                  //     TextButton(
-                  //         onPressed: () {}, child: const Text("See all >")),
-                  //   ],
-                  // ),
-                  // SizedBox(
-                  //   height: 140,
-                  //   child: ListView(
-                  //     scrollDirection: Axis.horizontal,
-                  //     children: [
-                  //       FeatureDoctorCard("Dr. Crick", "3.7",
-                  //           AppAssets.Community_image),
-                  //       FeatureDoctorCard("Dr. Strain", "3.0",
-                  //           AppAssets.Popular_image),
-                  //       FeatureDoctorCard("Dr. Lachinet", "2.9",
-                  //           AppAssets.Feature1_image),
-                  //       FeatureDoctorCard("Dr. Lachinet", "2.9",
-                  //           AppAssets.Feature2_image),
-                  //       FeatureDoctorCard("Dr. Lachinet", "2.9",
-                  //           AppAssets.Feature4_image),
-                  //       FeatureDoctorCard("Dr. Lachinet", "2.9",
-                  //           AppAssets.Community_image),
-                  //       FeatureDoctorCard("Dr. Lachinet", "2.9",
-                  //           AppAssets.Popular_image),
-                  //       FeatureDoctorCard("Dr. Lachinet", "2.9",
-                  //           AppAssets.Feature1_image),
-                  //     ],
-                  //   ),
-                  // ),
-                ],
+                  itemBuilder: (context, index) {
+                    var doctor = favouriteDoctors[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, DoctorDetailsScreen.route_name);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: DoctorCard(
+                          name: doctor["name"],
+                          specialty: doctor["specialty"],
+                          image: doctor["image"],
+                          isFavorite: doctor["isFavorite"],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
+              const SizedBox(height: 10),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -193,6 +127,7 @@ class _DoctorCardState extends State<DoctorCard> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme; //! Very very Important
     return Container(
       decoration: BoxDecoration(
         color: Colors.transparent, // ✅ لون أبيض خفيف شفاف
@@ -229,9 +164,7 @@ class _DoctorCardState extends State<DoctorCard> {
           const SizedBox(height: 8),
           Text(
             widget.name,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+            style: textTheme.bodySmall?.copyWith(
               overflow: TextOverflow.ellipsis, // ✅ لو الاسم طويل
             ),
             textAlign: TextAlign.center,
@@ -239,10 +172,10 @@ class _DoctorCardState extends State<DoctorCard> {
           const SizedBox(height: 4),
           Text(
             widget.specialty,
-            style: const TextStyle(
-              fontSize: 14,
+            style: textTheme.bodySmall?.copyWith(
+              overflow: TextOverflow.ellipsis, // ✅ لو الاسم طويل
               color: AppColors.primary,
-              overflow: TextOverflow.ellipsis,
+              fontSize: 14
             ),
             textAlign: TextAlign.center,
           ),
@@ -251,6 +184,11 @@ class _DoctorCardState extends State<DoctorCard> {
     );
   }
 }
+
+
+
+
+//! ======================================== Delete Soon =====================================
 
 Widget FeatureDoctorCard(String name, String rating, String image) {
   return Container(
@@ -298,3 +236,5 @@ Widget FeatureDoctorCard(String name, String rating, String image) {
     ),
   );
 }
+
+//! ======================================== Delete Soon =====================================

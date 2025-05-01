@@ -42,7 +42,7 @@ class HomeTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
-            children: [buildHeader(context), buildSearchBar()],
+            children: [buildHeader(context), buildSearchBar(context)],
           ),
           const SizedBox(height: 20,),
           // في مكان الاستدعاء
@@ -61,6 +61,8 @@ class HomeTab extends StatelessWidget {
   }
 
   Widget buildHeader(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme; //! Very very Important
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
       decoration: const BoxDecoration(
@@ -78,19 +80,12 @@ class HomeTab extends StatelessWidget {
             children: [
               Text(
                 "Hi User!",
-                style: AppStyle.googleStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
+                style: textTheme.headlineSmall?.copyWith(fontSize: 18 , fontWeight: FontWeight.bold,)
               ),
               const SizedBox(height: 5),
               Text(
                 "Dr dentist application",
-                style: AppStyle.googleStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                style: textTheme.headlineMedium?.copyWith(fontSize: 22)
               ),
             ],
           ),
@@ -126,23 +121,30 @@ class HomeTab extends StatelessWidget {
     );
   }
 
-  Widget buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 135, left: 20, right: 20),
-      child: TextField(
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          prefixIcon: const Icon(Icons.search, color: Colors.black),
-          hintText: "Search...",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
+  Widget buildSearchBar(BuildContext context) {
+  final theme = Theme.of(context); //! very important
+
+  return Padding(
+    padding: const EdgeInsets.only(top: 135, left: 20, right: 20),
+    child: TextField(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
+        prefixIcon: Icon(Icons.search, color: theme.iconTheme.color),
+        hintText: "Search...",
+        hintStyle: theme.textTheme.bodySmall?.copyWith(
+          color: theme.hintColor,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
         ),
       ),
-    );
-  }
+      style: theme.textTheme.bodySmall,
+    ),
+  );
+}
+
 
   Widget buildCommunitySection() {
     return Padding(

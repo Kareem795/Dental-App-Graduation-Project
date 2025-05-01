@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/Background/Gradient_Background_Wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 class XrayUploadScreen extends StatefulWidget {
   static const String route_name = "Xray_Upload_Screen";
@@ -35,20 +37,7 @@ class _XrayUploadScreenState extends State<XrayUploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-                Colors.blue.shade50,
-                Colors.white,
-                AppColors.primary,
-              ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+    return GradientScaffoldWrapper(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -67,12 +56,12 @@ class _XrayUploadScreenState extends State<XrayUploadScreen> {
           ),
           // centerTitle: true,
         ),
-      
+
         // خلفية بتدرج لوني
         body: Column(
           children: [
             const SizedBox(height: 30),
-        
+
             // Card أبيض فيه الصورة والأزرار
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -80,7 +69,6 @@ class _XrayUploadScreenState extends State<XrayUploadScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.grey,
@@ -118,40 +106,53 @@ class _XrayUploadScreenState extends State<XrayUploadScreen> {
                             ),
                           ),
                   ),
-        
+
                   const SizedBox(height: 25),
-        
+
                   // زرار Upload
                   ElevatedButton(
                     onPressed: _pickImage,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,    //! تفير لون الكلمة الى الون الابيض
-                      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 14),
+                      foregroundColor:
+                          Colors.white, //! تفير لون الكلمة الى الون الابيض
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 80, vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: const Text("Upload", style: TextStyle(fontSize: 16)),
                   ),
-        
+
                   const SizedBox(height: 15),
-        
+
                   // زرار Remove
                   ElevatedButton(
                     onPressed: _image != null ? _removeImage : null,
-                    style: ElevatedButton.styleFrom(
-                      
-                      //! تغير لون زر remove
-                      backgroundColor: _image != null ? Colors.red : Colors.grey[300],
-                      foregroundColor: _image != null ? Colors.white : Colors.black54,
-
-                      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.resolveWith<Color>((states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[800]!
+                              : Colors.grey[300]!;
+                        }
+                        return Theme.of(context).brightness == Brightness.dark
+                            ? Colors.red
+                            : Colors.deepOrange;
+                      }),
+                      foregroundColor:
+                          MaterialStateProperty.resolveWith<Color>((states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black45;
+                        }
+                        return Colors.white;
+                      }),
                     ),
-                    child: const Text("Remove", style: TextStyle(fontSize: 16)),
+                    child: const Text("Remove"),
                   ),
                 ],
               ),

@@ -4,6 +4,7 @@ import 'package:dental_app_graduation_project/Screens/patient/Select_Doctor_Avai
 import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/Background/BackgroundWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -57,70 +58,60 @@ class _SearchTabState extends State<SearchTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppAssets.Background),
-                fit: BoxFit.cover,
-              ),
-            ),
+    return BackgroundWrapper(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text("Search"),
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.popAndPushNamed(context,
+                  HomePatientScreen.route_name); // ✅ يرجع للشاشة اللي قبلها
+            },
           ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              title: const Text("Favourite"),
-              backgroundColor: Colors.transparent,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.popAndPushNamed(context , HomePatientScreen.route_name); // ✅ يرجع للشاشة اللي قبلها
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  hintText: "Search",
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                onChanged: (query) async {
+                  if (query.isNotEmpty) {
+                    final results = await searchDoctors(query);
+                    setState(() {
+                      isSearching = true;
+                      searchResults = results.cast<Map<String, dynamic>>();
+                    });
+                  } else {
+                    setState(() {
+                      isSearching = false;
+                      searchResults = [];
+                    });
+                  }
                 },
               ),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    onChanged: (query) async {
-                      if (query.isNotEmpty) {
-                        final results = await searchDoctors(query);
-                        setState(() {
-                          isSearching = true;
-                          searchResults = results.cast<Map<String, dynamic>>();
-                        });
-                      } else {
-                        setState(() {
-                          isSearching = false;
-                          searchResults = [];
-                        });
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  buildDoctorsList(),
-                ],
-              ),
-            ),
+              const SizedBox(height: 16),
+              buildDoctorsList(),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget buildDoctorsList() {
+    final textTheme = Theme.of(context).textTheme; //! Very very Important
+
     return Expanded(
       child: FutureBuilder<List<Map<String, dynamic>>>(
         future: isSearching ? Future.value(searchResults) : fetchDoctors(),
@@ -132,16 +123,18 @@ class _SearchTabState extends State<SearchTab> {
               color: AppColors.primary,
             ));
           } else if (snapshot.hasError) {
-            return const Center(
+            return Center(
                 child: Text(
               "Error loading doctors",
-              style: TextStyle(color: AppColors.primary, fontSize: 25),
+              style: textTheme.bodySmall
+                  ?.copyWith(color: AppColors.primary, fontSize: 25),
             ));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
+            return Center(
                 child: Text(
               "No doctors found",
-              style: TextStyle(color: AppColors.primary, fontSize: 25),
+              style: textTheme.bodySmall
+                  ?.copyWith(color: AppColors.primary, fontSize: 25),
             ));
           }
 
@@ -159,6 +152,7 @@ class _SearchTabState extends State<SearchTab> {
   }
 
   Widget buildDoctorCard(int index, Map<String, dynamic> doctor) {
+    final textTheme = Theme.of(context).textTheme; //! Very very Important
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, DoctorDetailsScreen.route_name);
@@ -189,15 +183,13 @@ class _SearchTabState extends State<SearchTab> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(doctor["name"] ?? "Dr. Unknown",
+                            style: textTheme.bodySmall?.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            )),
                         Text(
-                          doctor["name"] ?? "Dr. Unknown",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          doctor["Clinic_name"] ?? "Clinic",
+                          doctor["Clinic_name"] ?? "Clinic",//!==========================================
                           style: const TextStyle(color: AppColors.primary),
                         ),
                         const SizedBox(height: 5),
@@ -210,29 +202,29 @@ class _SearchTabState extends State<SearchTab> {
                           "7 Years experience",
                           style: TextStyle(color: Colors.black),
                         ),
-                        const Row(
+                         Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               backgroundColor: AppColors.primary,
                               minRadius: 6,
                             ),
                             SizedBox(width: 3),
                             Text(
                               "⭐ 90%",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
+                              style://!==========================================
+                                  textTheme.bodySmall?.copyWith(fontSize: 12, color: Colors.grey)
                             ),
-                            SizedBox(width: 10),
-                            CircleAvatar(
+                            const SizedBox(width: 10),
+                            const CircleAvatar(
                               backgroundColor: AppColors.primary,
                               minRadius: 6,
                             ),
-                            SizedBox(width: 3),
+                            const SizedBox(width: 3),
                             Flexible(
                               child: Text(
                                 "67 Patient Stories",
                                 style:
-                                    TextStyle(fontSize: 12, color: Colors.grey),
+                                    textTheme.bodySmall?.copyWith(fontSize: 12, color: Colors.grey),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -271,20 +263,20 @@ class _SearchTabState extends State<SearchTab> {
                       children: [
                         Text(
                           "Next Available",
-                          style: TextStyle(
+                          style: TextStyle(//!==========================================
                             color: AppColors.primary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          "11:00 AM tomorrow",
+                          "11:00 AM tomorrow",//!==========================================
                           style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
+                    style: ElevatedButton.styleFrom(//!==========================================
                       backgroundColor: AppColors.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -307,7 +299,7 @@ class _SearchTabState extends State<SearchTab> {
                     },
                     child: const Text(
                       "Book Now",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white),//!==========================================
                     ),
                   ),
                 ],

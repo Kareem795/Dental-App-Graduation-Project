@@ -1,12 +1,23 @@
-import 'package:dental_app_graduation_project/Screens/Screen_Test.dart';
-import 'package:dental_app_graduation_project/Screens/Splash/Splash.dart';
+import 'package:dental_app_graduation_project/Screens/Patient/Home_Patient_Screen.dart';
 import 'package:flutter/material.dart';
-import 'App controll/app_router.dart';
-import 'App controll/app_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:dental_app_graduation_project/Provider/my_provider.dart';
+import 'package:dental_app_graduation_project/App controll/app_router.dart';
+import 'package:dental_app_graduation_project/App controll/app_theme.dart';
+import 'package:dental_app_graduation_project/Screens/Splash/Splash.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const DentalApp());
+
+  final MyProvider appProvider = MyProvider();
+  await appProvider.getThemeLang(); 
+
+  runApp(
+    ChangeNotifierProvider<MyProvider>.value(
+      value: appProvider,
+      child: const DentalApp(),
+    ),
+  );
 }
 
 class DentalApp extends StatelessWidget {
@@ -14,19 +25,19 @@ class DentalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MyProvider>(context);
+
     return MaterialApp(
       title: 'Dental Graduation',
       debugShowCheckedModeBanner: false,
-      theme: appTheme,
+      theme: lightTheme,                // الثيم الفاتح
+      darkTheme: darkTheme,            // الثيم الداكن
+      themeMode: provider.appTheme,    // الوضع الحالي (فاتح/داكن)
+      initialRoute: Splash.route_name, // أول شاشة
 
-       initialRoute: Splash.route_name,
-      // initialRoute: ScreenTest.route_name,
-      
+      // initialRoute: HomePatientScreen.route_name, // أول شاشة
+
       onGenerateRoute: AppRouter.onGenerateRoute,
-
-      // يمكنك دعم اللغات هنا:
-      // supportedLocales: const [Locale('en'), Locale('ar')],
-      // localizationsDelegates: [...],
     );
   }
 }

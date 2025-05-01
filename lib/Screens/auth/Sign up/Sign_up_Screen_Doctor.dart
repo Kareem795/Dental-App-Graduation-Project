@@ -3,10 +3,11 @@ import 'package:dental_app_graduation_project/Screens/doctor/Home_Doctor_Screen.
 import 'package:dental_app_graduation_project/Utils/Constants/app_assets.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_colors.dart';
 import 'package:dental_app_graduation_project/Utils/Constants/app_constants.dart';
-import 'package:dental_app_graduation_project/Utils/Constants/app_style.dart';
+import 'package:dental_app_graduation_project/Utils/Widgets/Background/BackgroundWrapper.dart';
 import 'package:dental_app_graduation_project/Utils/Widgets/CustomTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 
 class SignUpScreenDoctor extends StatefulWidget {
   static const String route_name = "Sign Up Screen Doctor";
@@ -68,188 +69,183 @@ class _SignUpScreenDoctorState extends State<SignUpScreenDoctor> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppAssets.Background),
-                fit: BoxFit.cover,
-              ),
-            ),
+    final textTheme = Theme.of(context).textTheme; //! Very very Important
+
+    return BackgroundWrapper(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 80),
+                Text(
+                  "Join us to start searching",
+                  style: textTheme.headlineLarge?.copyWith(fontSize: 22,),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
+                  textAlign: TextAlign.center,
+                  style: textTheme.headlineSmall?.copyWith(color: Colors.grey[600],fontSize: 14)
+                ),
+                const SizedBox(height: 30),
+                Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Expanded(
+      child: ElevatedButton.icon(
+        onPressed: () {},
+        icon: Image.asset(
+          AppAssets.Google,
+          width: 24,
+          height: 24,
+        ),
+        label: const Text(
+          "Google",
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          style: TextStyle(fontSize: 14),
+        ),
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: const BorderSide(color: Colors.grey),
           ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        ),
+      ),
+    ),
+    const SizedBox(width: 10),
+    Expanded(
+      child: ElevatedButton.icon(
+        onPressed: () {},
+        icon: Image.asset(
+          AppAssets.Facebook,
+          width: 24,
+          height: 24,
+        ),
+        label: const Text(
+          "Facebook",
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          style: TextStyle(fontSize: 14),
+        ),
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: const BorderSide(color: Colors.grey),
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+
+                const SizedBox(height: 30),
+
+                /// Custom TextFields
+                CustomTextField(
+                  label: "Name",
+                  controller: _nameController,
+                ),
+                const SizedBox(height: 15),
+
+                CustomTextField(
+                  label: "Email",
+                  controller: _emailController,
+                ),
+                const SizedBox(height: 15),
+
+                CustomTextField(
+                  label: "Password",
+                  controller: _passwordController,
+                  obscureText: !_isPasswordVisible,
+                  suffixIcon: IconButton(
+                    icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 15),
+
+                CustomTextField(
+                  label: "Clinic name",
+                  controller: _clinicNameController,
+                ),
+                const SizedBox(height: 15),
+
+                CustomTextField(
+                  label: "Phone Number",
+                  controller: _phoneController,
+                ),
+                const SizedBox(height: 10),
+
+                /// Terms Checkbox
+                Row(
                   children: [
-                    const SizedBox(height: 80),
-                    Text(
-                      "Join us to start searching",
-                      style: AppStyle.googleStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "You can upload X-ray, make medical report, search a course, apply course and find\nscholarship for abroad studies",
-                      textAlign: TextAlign.center,
-                      style: AppStyle.googleStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: Image.asset(AppAssets.Google, width: 40, height: 40),
-                            label: const Text("Google"),
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.black,
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: const BorderSide(color: Colors.grey),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: Image.asset(AppAssets.Facebook, width: 40, height: 40),
-                            label: const Text("Facebook"),
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.black,
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: const BorderSide(color: Colors.grey),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-
-                    /// Custom TextFields
-                    CustomTextField(
-                      label: "Name",
-                      controller: _nameController,
-                    ),
-                    const SizedBox(height: 15),
-
-                    CustomTextField(
-                      label: "Email",
-                      controller: _emailController,
-                    ),
-                    const SizedBox(height: 15),
-
-                    CustomTextField(
-                      label: "Password",
-                      controller: _passwordController,
-                      obscureText: !_isPasswordVisible,
-                      suffixIcon: IconButton(
-                        icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-
-                    CustomTextField(
-                      label: "Clinic name",
-                      controller: _clinicNameController,
-                    ),
-                    const SizedBox(height: 15),
-
-                    CustomTextField(
-                      label: "Phone Number",
-                      controller: _phoneController,
-                    ),
-                    const SizedBox(height: 10),
-
-                    /// Terms Checkbox
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _isTermsAccepted,
-                          onChanged: (value) {
-                            setState(() {
-                              _isTermsAccepted = value!;
-                            });
-                          },
-                          activeColor: AppColors.primary,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "I agree with the Terms of Service & Privacy Policy",
-                            style: AppStyle.googleStyle(fontSize: 12),
-                            overflow: TextOverflow.visible,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    /// Sign Up Button
-                    ElevatedButton(
-                      onPressed: _signUp,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
-                      child: Text(
-                        "Sign up",
-                        style: AppStyle.googleStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-
-                    /// Log in
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, LoginScreenDoctor.route_name);
+                    Checkbox(
+                      value: _isTermsAccepted,
+                      onChanged: (value) {
+                        setState(() {
+                          _isTermsAccepted = value!;
+                        });
                       },
+                      activeColor: AppColors.primary,
+                    ),
+                    Expanded(
                       child: Text(
-                        "Have an account? Log in",
-                        style: AppStyle.googleStyle(
-                          fontSize: 14,
-                          color: AppColors.primary,
-                        ),
+                        "I agree with the Terms of Service & Privacy Policy",
+                        style: textTheme.headlineSmall?.copyWith(fontSize: 14),
+                        overflow: TextOverflow.visible,
                       ),
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 20),
+
+                /// Sign Up Button
+                ElevatedButton(
+                  onPressed: _signUp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: Text(
+                    "Sign up",
+                    style: textTheme.headlineMedium
+                  ),
+                ),
+                const SizedBox(height: 15),
+
+                /// Log in
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, LoginScreenDoctor.route_name);
+                  },
+                  child: Text(
+                    "Have an account? Log in",
+                    style: textTheme.headlineSmall?.copyWith(color: AppColors.primary)
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
+
     );
   }
 }
